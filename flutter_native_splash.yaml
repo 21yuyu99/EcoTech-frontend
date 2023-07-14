@@ -1,0 +1,8 @@
+flutter_native_splash:
+  color: "#2CBD0F"
+  image: assets/img/splash.png
+  fullscreen: true
+  android_12:
+    color: "#2CBD0F"
+    image: assets/img/leaf_pig.png
+    branding: assets/img/splash_text.png
