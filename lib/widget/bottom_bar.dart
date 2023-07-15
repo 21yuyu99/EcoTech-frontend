@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widget/colors.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -9,22 +10,34 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   List<String> imageList = ['assets/img/bottom_bar/home.png','assets/img/bottom_bar/record.png','assets/img/bottom_bar/market.png','assets/img/bottom_bar/mypage.png'];
-  List<String> greeImageList = ['assets/img/bottom_bar/green_home.png','assets/img/bottom_bar/green_record.png','assets/img/bottom_bar/green_market.png','assets/img/bottom_bar/green_mypage.png'];
-  List<bool> selectedMenu = [true,false,false,false];
-
+  List<String> greenImageList = ['assets/img/bottom_bar/green_home.png','assets/img/bottom_bar/green_record.png','assets/img/bottom_bar/green_market.png','assets/img/bottom_bar/green_mypage.png'];
+  List<String> menuNameList = ["홈","기록","스토어","마이페이지"];
+  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child : Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // ...selectedMenu.map( (isSelected,index) =>
-            // isSelected == true?Image.asset()
-            // ).toList(),
-          ],
-        )
-        // child: Container(
+      bottomNavigationBar: BottomNavigationBar(
+        items: menuNameList.asMap().entries.map((entry) {
+          int idx = entry.key;
+          String val = entry.value;
+          String img = idx == _selectedIndex ? greenImageList[idx] : imageList[idx];
+          return BottomNavigationBarItem(
+            icon: Image.asset(img),
+            label: val,
+          );
+        }).toList(),
+        selectedItemColor: AppColor.primaryColor,
+        currentIndex: _selectedIndex,
+        unselectedItemColor: AppColor.greyColor,
+        unselectedFontSize: 14,
+        onTap: (int value){
+          setState(() {
+            _selectedIndex = value;
+          });
+        },
+      ),
+
+      // child: Container(
         //     height: 90,
         //     margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
         //     decoration: BoxDecoration(
@@ -93,8 +106,7 @@ class _BottomBarState extends State<BottomBar> {
         //       ],
         //     )
         // ),
-      ),
-    );
+      );
   }
 }
 
