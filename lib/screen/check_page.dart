@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
-
 import '../widget/colors.dart';
 
 class CheckPage extends StatefulWidget {
   const CheckPage({super.key});
-
   @override
   State<CheckPage> createState() => _CheckPageState();
 }
 
 class _CheckPageState extends State<CheckPage> {
+  List<String> checkTextList = [
+    "사용하지 않는 플러그를 모두 뽑았나요?",
+    "오늘 음식을 남기지 않고 드셨나요?",
+    "출근길에 대중교통을 이용하셨나요?",
+  ];
+  List<bool> yesList = [
+    false,false,false
+  ];
+  List<bool> noList = [
+    true,true,true
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +85,83 @@ class _CheckPageState extends State<CheckPage> {
                   ),
                 ],
               ),
-            )
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            ...checkTextList.map((question) => Column(
+              children: [
+                Text(question,
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("예",style: TextStyle(fontSize: 20,fontFamily: 'gaegu',fontWeight:FontWeight.w500),),
+                    Transform.scale(
+                        scale: 1.4,
+                        child: Checkbox(
+                          activeColor : Colors.black,
+                          checkColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2.0),
+                          ),
+                          side: MaterialStateBorderSide.resolveWith(
+                                (states) => BorderSide(width: 2.0, color: Colors.black),
+                          ),
+                          value: yesList[checkTextList.indexOf(question)],
+                          onChanged:(value){
+                            setState(() {
+                              yesList[checkTextList.indexOf(question)] = !yesList[checkTextList.indexOf(question)];
+                              noList[checkTextList.indexOf(question)] = !noList[checkTextList.indexOf(question)];
+                            });
+                          },
+                        ),
+                      ),
+                    SizedBox(width: 20,),
+                    Text("아니오",style: TextStyle(fontSize: 20,fontFamily: 'gaegu',fontWeight:FontWeight.w500)),
+                    Transform.scale(
+                      scale:1.4,
+                      child :Checkbox(
+                        activeColor : Colors.black,
+                        checkColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2.0),
+                        ),
+                        side: MaterialStateBorderSide.resolveWith(
+                              (states) => BorderSide(width: 2.0, color: Colors.black),
+                        ),
+                        value: noList[checkTextList.indexOf(question)],
+                        onChanged:(value){
+                          setState(() {
+                            yesList[checkTextList.indexOf(question)] = !yesList[checkTextList.indexOf(question)];
+                            noList[checkTextList.indexOf(question)] = !noList[checkTextList.indexOf(question)];
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Image.asset('assets/img/record/grey_line.png'),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+              ).toList(),
+            Text("에어컨을 몇도로 설정하고 생활하셨나요?",
+              style: TextStyle(
+                fontSize: 24,
+              ),
+            ),
           ],
         )
     );
