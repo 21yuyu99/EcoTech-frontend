@@ -49,27 +49,59 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
+      body: Column(
         children: [
-          Column(
+          const SizedBox(height: 150),
+          Row(
             children: [
-              Text('누적 절약 금액', style: Theme.of(context).textTheme.headlineLarge,),
-              InkWell(
-                onTap: (){
-                },
-                child: Image.asset('assets/img/piggy_bank.png'),
+              const SizedBox(width: 10,),
+              Column(
+                children: [
+                  Text('누적 절약 금액', style: Theme.of(context).textTheme.headlineMedium,),
+                  InkWell(
+                    onTap: (){
+                    },
+                    child: Image.asset('assets/img/piggy_bank.png', width: 80, height: 80,),
+                  ),
+                  Text('$_money 원', style: Theme.of(context).textTheme.headlineMedium,),
+                ],
               ),
-              Text('$_money 원', style: Theme.of(context).textTheme.headlineMedium,),
+              const SizedBox(width: 50,),
+              Column(
+                children: [
+                  Text('내 절감량', style: Theme.of(context).textTheme.headlineMedium,),
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          InkWell(
+                            onTap: (){
+                            },
+                            child: Image.asset('assets/img/plug.png', width: 100, height: 100,),
+                          ),
+                          Text('$_electricity kwh', style: Theme.of(context).textTheme.headlineSmall,)
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          InkWell(
+                            onTap: (){
+                            },
+                            child: Image.asset('assets/img/cloud_co2.png', width: 100, height: 100,),
+                          ),
+                          Text('$_co2 kwh', style: Theme.of(context).textTheme.headlineSmall,)
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ],
           ),
-          Column(
-
-          ),
-          Column(
-
-          )
+          Image.asset('assets/img/sprout_and_barren_land.png', height: 600, width: 600,)
         ],
       )
+
     );
   }
 }
