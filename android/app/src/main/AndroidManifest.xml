@@ -2,7 +2,10 @@
     <application
         android:label="에코테크"
         android:name="${applicationName}"
-        android:icon="@mipmap/ecotech_logo">
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        >
+        >
         <activity
             android:name=".MainActivity"
             android:exported="true"
