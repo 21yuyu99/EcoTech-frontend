@@ -67,14 +67,6 @@ flutter:
      - assets/img/record/grey_line.png
      - assets/img/record/down_arrow.png
      - assets/img/record/up_arrow.png
-     - assets/img/bottom_bar/home.png
-     - assets/img/bottom_bar/green_home.png
-     - assets/img/bottom_bar/market.png
-     - assets/img/bottom_bar/green_market.png
-     - assets/img/bottom_bar/mypage.png
-     - assets/img/bottom_bar/green_mypage.png
-     - assets/img/bottom_bar/record.png
-     - assets/img/bottom_bar/green_record.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
