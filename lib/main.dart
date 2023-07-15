@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screen/check_page.dart';
 import 'package:flutter/services.dart';
 
 void main() {
@@ -14,11 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '에코테크',
-      // home: Home(),
+      home: Home(),
       theme: ThemeData(
           fontFamily: 'MainFont'
       ),
-      home : CheckPage(),
     );
   }
 }

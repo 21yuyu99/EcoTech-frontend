@@ -65,6 +65,8 @@ flutter:
   assets:
      - assets/img/record/title_line.png
      - assets/img/record/grey_line.png
+     - assets/img/record/down_arrow.png
+     - assets/img/record/up_arrow.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
