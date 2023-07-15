@@ -60,6 +60,7 @@ class _HomeState extends State<Home> {
                   Text('누적 절약 금액', style: Theme.of(context).textTheme.headlineMedium,),
                   InkWell(
                     onTap: (){
+                      // 기록결과 페이지로 navigate
                     },
                     child: Image.asset('assets/img/piggy_bank.png', width: 80, height: 80,),
                   ),
@@ -76,6 +77,7 @@ class _HomeState extends State<Home> {
                         children: [
                           InkWell(
                             onTap: (){
+                              // 기록결과 페이지로 navigate
                             },
                             child: Image.asset('assets/img/plug.png', width: 100, height: 100,),
                           ),
@@ -86,6 +88,7 @@ class _HomeState extends State<Home> {
                         children: [
                           InkWell(
                             onTap: (){
+                              // 기록결과 페이지로 navigate
                             },
                             child: Image.asset('assets/img/cloud_co2.png', width: 100, height: 100,),
                           ),
