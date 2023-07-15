@@ -22,14 +22,20 @@ class _BottomBarState extends State<BottomBar> {
           String val = entry.value;
           String img = idx == _selectedIndex ? greenImageList[idx] : imageList[idx];
           return BottomNavigationBarItem(
-            icon: Image.asset(img),
+            icon: Image.asset(img,
+              height: 40,
+              width: 40,
+            ),
             label: val,
           );
         }).toList(),
         selectedItemColor: AppColor.primaryColor,
         currentIndex: _selectedIndex,
         unselectedItemColor: AppColor.greyColor,
-        unselectedFontSize: 14,
+        unselectedFontSize: 16,
+        selectedFontSize: 16,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         onTap: (int value){
           setState(() {
             _selectedIndex = value;
@@ -50,62 +56,6 @@ class _BottomBarState extends State<BottomBar> {
         //         )
         //       ],
         //     ),
-        //     child: Row(
-        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //       children: [
-        //           Container(
-        //               child: Column(
-        //                 children: [
-        //                   Container(
-        //                     margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
-        //                     child : Image.asset('assets/img/bottom_bar/green_home.png'),
-        //                   ),
-        //                   Container(
-        //                     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        //                     child : Text('홈'),
-        //                   )
-        //                 ],
-        //               )
-        //           ),
-        //           Container(
-        //               margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        //               child: Column(
-        //                 children: [
-        //                   Image.asset('assets/img/bottom_bar/record.png'),
-        //                   Container(
-        //                     margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-        //                     child : Text('기록'),
-        //                   )
-        //                 ],
-        //               )
-        //           ),
-        //           Container(
-        //               margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-        //               child: Column(
-        //                 children: [
-        //                   Image.asset('assets/img/bottom_bar/market.png'),
-        //                   Container(
-        //                     margin: EdgeInsets.fromLTRB(0, 9, 0, 0),
-        //                     child : Text('스토어'),
-        //                   )
-        //                 ],
-        //               )
-        //           ),
-        //           Container(
-        //               margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        //               child: Column(
-        //                 children: [
-        //                   Image.asset('assets/img/bottom_bar/mypage.png'),
-        //                   Container(
-        //                     margin: EdgeInsets.fromLTRB(0, 2, 0, 0),
-        //                     child : Text('마이페이지'),
-        //                   )
-        //                 ],
-        //               )
-        //           ),
-        //       ],
-        //     )
-        // ),
       );
   }
 }
