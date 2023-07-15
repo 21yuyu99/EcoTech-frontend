@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend/widget/bottom_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,6 +34,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      body : BottomBar()
     );
   }
 }
