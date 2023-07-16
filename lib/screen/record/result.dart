@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screen/record/by_item.dart';
 import 'package:frontend/utils/colors.dart';
 import 'package:frontend/widget/bottom_bar.dart';
 
@@ -33,6 +34,10 @@ class _ResultPageState extends State<ResultPage> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0))),
           onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ByItemPage()),
+            );
           },
           backgroundColor: AppColor.accentColor,
           child: Text("항목별 보기",style: TextStyle(fontSize: 19,fontWeight: FontWeight.w500),),
