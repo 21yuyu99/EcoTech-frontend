@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
-import 'package:frontend/screen/check_page.dart';
+import 'package:frontend/screen/record/check_page.dart';
+import 'package:frontend/screen/record/record_main.dart';
 import 'package:frontend/utils/colors.dart';
 
 class BottomBar extends StatefulWidget {
@@ -64,10 +65,10 @@ class _BottomBarState extends State<BottomBar> {
                 MaterialPageRoute(builder: (context) => const Home()),
               );
               break;
-            case 2:
+            case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CheckPage()),
+                MaterialPageRoute(builder: (context) => const RecordMain()),
               );
               break;
           }

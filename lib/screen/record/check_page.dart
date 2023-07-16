@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widget/bottom_bar.dart';
-import '../utils/colors.dart';
+import 'package:frontend/widget/pop_up.dart';
+import '../../utils/colors.dart';
 
 class CheckPage extends StatefulWidget {
   const CheckPage({super.key});
@@ -23,73 +24,77 @@ class _CheckPageState extends State<CheckPage> {
   int degree = 26;
   @override
   Widget build(BuildContext context) {
+    bool isSaved = false;
     return Scaffold(
-        bottomNavigationBar: BottomBar(selectedIdx: 2,),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(63.0),
+        child: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: Container(
+            margin: EdgeInsets.only(top: 6),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: AppColor.accentColor,
+                size: 35,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+          title: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                height:  MediaQuery.of(context).size.height*0.2,
+                width : MediaQuery.of(context).size.width*0.65,
+                padding: EdgeInsets.only(left: 6,bottom: 0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                    "오늘 하루 Check",
+                    style:TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        color: AppColor.primaryColor
+                    )
+                ),
+              ),
+              Positioned(
+                  bottom: 28,
+                  left:-8,
+                  child: Container(
+                    child: Image(
+                      image: AssetImage('assets/img/record/title_line.png'),
+                    ),
+                  )
+              ),
+            ],
+          ),
+          actions: [
+            isSaved?Text(""):Container(
+              margin: EdgeInsets.only(top:10,bottom: 8,right: 10),
+              child: ElevatedButton(
+                onPressed: ()=>savePopUp(context),
+                style:ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.accentColor,
+                    textStyle : TextStyle(
+                      color:Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                    )
+                ),
+                child: Text("저장"),
+              ),
+            )
+          ],
+        ),
+      ),
+        bottomNavigationBar: BottomBar(selectedIdx: 1,),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 26),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height*0.1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width : MediaQuery.of(context).size.width*0.1,
-                      child: IconButton(
-                        onPressed:(){},
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: AppColor.accentColor,
-                          size: 35,
-                        ),
-                      ),
-                    ),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          height:  MediaQuery.of(context).size.height*0.15,
-                          width : MediaQuery.of(context).size.width*0.6,
-                          alignment: Alignment.center,
-                          child: Text(
-                              "오늘 하루 Check",
-                              style:TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColor.primaryColor
-                              )
-                          ),
-                        ),
-                        Positioned(
-                            bottom: -2,
-                            left:12,
-                            child: Container(
-                              child: Image(
-                                image: AssetImage('assets/img/record/title_line.png'),
-                              ),
-                            )
-                        ),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: (){},
-                      style:ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.accentColor,
-                          padding: EdgeInsets.symmetric(vertical: 8,horizontal: 10),
-                          textStyle : TextStyle(
-                            color:Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                          )
-                      ),
-                      child: Text("저장"),
-                    ),
-                  ],
-                ),
-              ),
               SizedBox(
                 height: 25,
               ),
