@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend/screen/record/record_main.dart';
 import 'package:frontend/screen/record/result.dart';
 import 'package:frontend/widget/bottom_bar.dart';
 
 void main() {
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +22,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -33,121 +30,104 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _money = 0;
-  int _electricity = 0;
-  int _co2 = 0;
-  int _level = 1;
-
-  void _set_money(){
-    setState(() {
-      _money = _money + 100;        //상수는 그날 절약 금액에 대한 변수로 후에 대체
-    });
-  }
-
-  void _set_electricity(){
-    setState(() {
-      _electricity = _electricity + 100;        //상수는 그날 절약 전력량에 대한 변수로 후에 대체
-    });
-  }
-
-  void _set_co2(){
-    setState(() {
-      _co2 = _co2 + 100;            //상수는 그날 절약 이산화탄소량에 대한 변수로 후에 대체
-    });
-  }
-
-  void _set_level(){
-    setState(() {
-      _level = _level + 1;          // 레벨이 올라갈 때 마다 setstate
-    });
-  }
 
   @override
-    Widget build(BuildContext context) {
-      return Scaffold(
+  Widget build(BuildContext context) {
+    return Scaffold(
         bottomNavigationBar: const BottomBar(selectedIdx: 0,),
-        body: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(height: 80,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-
+        body: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(top: 45),
+                    child: Column(
                       children: [
-                        Text('누적 절약 금액', style: Theme.of(context).textTheme.headlineSmall,),
-                        InkWell(
-                          onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const ResultPage()),
-                            );
-                          },
-                          child: Image.asset('assets/img/piggy_bank.png', width: 60, height: 60,),
+                        Container(
+                          height: MediaQuery.of(context).size.height*0.233,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  Text('누적 절약 금액', style: TextStyle(fontSize: 26)),
+                                  SizedBox(height: 5,),
+                                  Image.asset('assets/img/piggy_bank.png', width: 70, height: 70,),
+                                  SizedBox(height: 9,),
+                                  Row(
+                                    children: [
+                                      Text('0', style: TextStyle(fontSize: 18, fontFamily: 'gaegu',fontWeight: FontWeight.w700)),
+                                      SizedBox(width: 3,),
+                                      Text("원", style: TextStyle(fontSize: 18, fontFamily: 'gaegu',color: Color(0xffB9A060))),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Text('   내 절감량', style: TextStyle(fontSize: 26)),
+                                  Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Image.asset('assets/img/plug.png', width: 80, height: 83,),
+                                          Row(
+                                            children: [
+                                              Text('0', style: TextStyle(fontSize: 18, fontFamily: 'gaegu',fontWeight: FontWeight.w700)),
+                                              SizedBox(width: 3,),
+                                              Text("kWh", style: TextStyle(fontSize: 18, fontFamily: 'gaegu',color: Color(0xffB9A060))),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Image.asset('assets/img/cloud_co2.png', width: 60, height: 82,),
+                                          Row(
+                                            children: [
+                                              Text('0', style: TextStyle(fontSize: 18, fontFamily: 'gaegu',fontWeight: FontWeight.w700)),
+                                              SizedBox(width: 3,),
+                                              Text("gCO₂e", style: TextStyle(fontSize: 18, fontFamily: 'gaegu',color: Color(0xffB9A060))),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                        Text('$_money 원', style: Theme.of(context).textTheme.headlineSmall,),
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text('내 절감량', style: Theme.of(context).textTheme.headlineSmall,),
-                        const SizedBox(height: 10,),
-                        Row(
-                          children: [
-                            Column(
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const ResultPage()),
-                                    );
-                                  },
-                                  child: Image.asset('assets/img/plug.png', width: 50, height: 50,),
+                        Column(
+                            children: [
+                              SizedBox(height: 15,),
+                              Stack(
+                                  children: [
+                                    Container(
+                                      height: 50,
+                                      width : MediaQuery.of(context).size.width,
+                                      alignment: Alignment.bottomCenter,
+                                      child: Text("LV.1", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w900,fontFamily: 'gaegu')),
+                                    ),
+                                    Positioned(
+                                        left: MediaQuery.of(context).size.width*0.5+15,
+                                        bottom:20,
+                                        child: Image.asset('assets/img/notification.png', width:18, height: 18,))
+                                  ],
                                 ),
-                                Text('$_electricity kwh', style: Theme.of(context).textTheme.headlineSmall,)
-                              ],
-                            ),
-                            const SizedBox(width: 20,),
-                            Column(
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const ResultPage()),
-                                    );
-                                  },
-                                  child: Image.asset('assets/img/cloud_co2.png', width: 40, height: 49,),
-                                ),
-                                Text('$_co2 gCO2e', style: Theme.of(context).textTheme.headlineSmall,)
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
+                              Padding(
+                                padding : EdgeInsets.only(left : MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
+                                child: Container(
+                                  child: Image.asset('assets/img/sprout_and_barren_land.png',
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height*0.463,
+                                  ),
+                                )
+                              )
+                            ],
+                          ),
+                      ]
                     ),
-                  ],
-                ),
-                const SizedBox(height: 100,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("LV.$_level", style: Theme.of(context).textTheme.headlineMedium,),
-                    const Padding(padding: EdgeInsets.all(5)),
-                    Image.asset('assets/img/notification.png', width: 30, height: 30,)
-                  ],
-                ),
-                Image.asset('assets/img/sprout_and_barren_land.png', height: 420, width: 500,)
-              ],
-            ),
-          ),
-        ),
-      );
+            )
+        );
   }
 }
