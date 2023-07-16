@@ -66,6 +66,7 @@ flutter:
     - assets/img/plug.png
     - assets/img/cloud_co2.png
     - assets/img/sprout_and_barren_land.png
+    - assets/img/notification.png
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
