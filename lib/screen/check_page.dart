@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widget/colors.dart';
+import '../utils/colors.dart';
 
 class CheckPage extends StatefulWidget {
   const CheckPage({super.key});
