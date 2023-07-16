@@ -108,27 +108,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
-//
-// class Home extends StatelessWidget {
-//   const Home({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SizedBox(
-//         width: MediaQuery.of(context).size.width,
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           children: [
-//             InkWell(
-//               onTap: (){
-//               },
-//               child: Image.asset('assets/img/piggy_bank.png'),
-//             )
-//           ],
-//         )
-//       )
-//     );
-//   }
-// }
