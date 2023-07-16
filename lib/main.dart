@@ -63,82 +63,87 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(height: 200),
-          Row(
-            children: [
-              const SizedBox(width: 20,),
-              Column(
-                children: [
-                  Text('누적 절약 금액', style: Theme.of(context).textTheme.headlineMedium,),
-                  InkWell(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ResultPage()),
-                      );
-                    },
-                    child: Image.asset('assets/img/piggy_bank.png', width: 80, height: 80,),
-                  ),
-                  Text('$_money 원', style: Theme.of(context).textTheme.headlineMedium,),
-                ],
-              ),
-              const SizedBox(width: 60,),
-              Column(
-                children: [
-                  Text('내 절감량', style: Theme.of(context).textTheme.headlineMedium,),
-                  Row(
-                    children: [
-                      Column(
-                        children: [
-                          InkWell(
-                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const ResultPage()),
-                              );
-                            },
-                            child: Image.asset('assets/img/plug.png', width: 100, height: 100,),
-                          ),
-                          Text('$_electricity kwh', style: Theme.of(context).textTheme.headlineSmall,)
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          InkWell(
-                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const ResultPage()),
-                              );
-                            },
-                            child: Image.asset('assets/img/cloud_co2.png', width: 100, height: 100,),
-                          ),
-                          Text('$_co2 gCO2e', style: Theme.of(context).textTheme.headlineSmall,)
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ],
+    Widget build(BuildContext context) {
+      return Scaffold(
+        bottomNavigationBar: const BottomBar(selectedIdx: 0,),
+        body: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(top:40,bottom:15),
+            child: Column(
+              children: [
+                const SizedBox(height: 200),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        Text('누적 절약 금액', style: Theme.of(context).textTheme.headlineMedium,),
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const ResultPage()),
+                            );
+                          },
+                          child: Image.asset('assets/img/piggy_bank.png', width: 80, height: 80,),
+                        ),
+                        Text('$_money 원', style: Theme.of(context).textTheme.headlineMedium,),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text('내 절감량', style: Theme.of(context).textTheme.headlineMedium,),
+                        Row(
+                          children: [
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const ResultPage()),
+                                    );
+                                  },
+                                  child: Image.asset('assets/img/plug.png', width: 100, height: 100,),
+                                ),
+                                Text('$_electricity kwh', style: Theme.of(context).textTheme.headlineSmall,)
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const ResultPage()),
+                                    );
+                                  },
+                                  child: Image.asset('assets/img/cloud_co2.png', width: 100, height: 100,),
+                                ),
+                                Text('$_co2 gCO2e', style: Theme.of(context).textTheme.headlineSmall,)
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 100,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("LV.$_level", style: Theme.of(context).textTheme.headlineMedium,),
+                    const Padding(padding: EdgeInsets.all(5)),
+                    Image.asset('assets/img/notification.png', width: 30, height: 30,)
+                  ],
+                ),
+                Image.asset('assets/img/sprout_and_barren_land.png', height: 420, width: 500,)
+              ],
+            ),
           ),
-          const SizedBox(height: 100,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("LV.$_level", style: Theme.of(context).textTheme.headlineMedium,),
-              const Padding(padding: EdgeInsets.all(5)),
-              Image.asset('assets/img/notification.png', width: 30, height: 30,)
-            ],
-          ),
-          Image.asset('assets/img/sprout_and_barren_land.png', height: 420, width: 500,)
-        ],
-      ),
-      bottomNavigationBar: const BottomBar(selectedIdx: 0,),
-    );
+        ),
+      );
   }
 }
