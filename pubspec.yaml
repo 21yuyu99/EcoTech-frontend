@@ -69,6 +69,10 @@ flutter:
      - assets/img/record/up_arrow.png
      - assets/img/record/circle_check.png
      - assets/img/record/note.png
+     - assets/img/record/piggy_bank.png
+     - assets/img/record/fork.png
+     - assets/img/record/electricity.png
+     - assets/img/record/green_gas.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screen/record/result.dart';
 import 'package:frontend/utils/colors.dart';
 Future<void> savePopUp(BuildContext context) {
   return showDialog<void>(
@@ -39,9 +40,15 @@ Future<void> savePopUp(BuildContext context) {
                   padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
                 ),
                 onPressed: (){
-                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ResultPage()),
+                  );
                 },
-                child: Text("저장",style: TextStyle(color: Colors.black,fontSize: 23),),
+                child: Text(
+                  "저장",
+                  style: TextStyle(color: Colors.black,fontSize: 23,
+                ),),
               ),
               ],
           ),

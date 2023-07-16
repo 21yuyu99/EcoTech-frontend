@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screen/record/check_page.dart';
+import 'package:frontend/screen/record/result.dart';
 import 'package:frontend/utils/colors.dart';
 import 'package:frontend/widget/bottom_bar.dart';
 
@@ -83,7 +84,12 @@ class _RecordMainState extends State<RecordMain> {
                       backgroundColor: Color(0xffFFFCEE),
                       foregroundColor: Colors.black
                   ),
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ResultPage()),
+                    );
+                  },
                   child:Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
