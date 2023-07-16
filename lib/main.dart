@@ -70,14 +70,16 @@ class _HomeState extends State<Home> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                const SizedBox(height: 80,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Column(
+
                       children: [
-                        Text('누적 절약 금액', style: Theme.of(context).textTheme.headlineMedium,),
+                        Text('누적 절약 금액', style: Theme.of(context).textTheme.headlineSmall,),
                         InkWell(
                           onTap: (){
                             Navigator.push(
@@ -85,14 +87,16 @@ class _HomeState extends State<Home> {
                               MaterialPageRoute(builder: (context) => const ResultPage()),
                             );
                           },
-                          child: Image.asset('assets/img/piggy_bank.png', width: 80, height: 80,),
+                          child: Image.asset('assets/img/piggy_bank.png', width: 60, height: 60,),
                         ),
-                        Text('$_money 원', style: Theme.of(context).textTheme.headlineMedium,),
+                        Text('$_money 원', style: Theme.of(context).textTheme.headlineSmall,),
                       ],
                     ),
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text('내 절감량', style: Theme.of(context).textTheme.headlineMedium,),
+                        Text('내 절감량', style: Theme.of(context).textTheme.headlineSmall,),
+                        const SizedBox(height: 10,),
                         Row(
                           children: [
                             Column(
@@ -104,11 +108,12 @@ class _HomeState extends State<Home> {
                                       MaterialPageRoute(builder: (context) => const ResultPage()),
                                     );
                                   },
-                                  child: Image.asset('assets/img/plug.png', width: 100, height: 100,),
+                                  child: Image.asset('assets/img/plug.png', width: 50, height: 50,),
                                 ),
                                 Text('$_electricity kwh', style: Theme.of(context).textTheme.headlineSmall,)
                               ],
                             ),
+                            const SizedBox(width: 20,),
                             Column(
                               children: [
                                 InkWell(
@@ -118,7 +123,7 @@ class _HomeState extends State<Home> {
                                       MaterialPageRoute(builder: (context) => const ResultPage()),
                                     );
                                   },
-                                  child: Image.asset('assets/img/cloud_co2.png', width: 100, height: 100,),
+                                  child: Image.asset('assets/img/cloud_co2.png', width: 40, height: 49,),
                                 ),
                                 Text('$_co2 gCO2e', style: Theme.of(context).textTheme.headlineSmall,)
                               ],
