@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widget/bottom_bar.dart';
 import '../utils/colors.dart';
 
 class CheckPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _CheckPageState extends State<CheckPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: BottomBar(selectedIdx: 2,),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -207,7 +209,7 @@ class _CheckPageState extends State<CheckPage> {
                     ],
                   )
                 ],
-              )
+              ),
             ],
           ),
         ),

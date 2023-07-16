@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body : BottomBar()
+      bottomNavigationBar: BottomBar(selectedIdx: 0,),
     );
   }
 }
