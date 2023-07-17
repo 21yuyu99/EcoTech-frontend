@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend/screen/record/result.dart';
-import 'package:frontend/widget/bottom_bar.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/screen/login.dart';
+import 'package:frontend/screen/mainPage.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  KakaoSdk.init(nativeAppKey: dotenv.env['kakaoKey']);
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
@@ -14,120 +20,52 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '에코테크',
-      home: Home(),
       theme: ThemeData(
           fontFamily: 'MainFont'
       ),
+      home: Login(),
+
     );
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({super.key});
-
+class Login extends StatefulWidget {
+  const Login({super.key});
   @override
-  State<Home> createState() => _HomeState();
+  State<Login> createState() => _LoginState();
 }
 
-class _HomeState extends State<Home> {
-
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: const BottomBar(selectedIdx: 0,),
-        body: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(top: 45),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height*0.233,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  Text('누적 절약 금액', style: TextStyle(fontSize: 26)),
-                                  SizedBox(height: 5,),
-                                  Image.asset('assets/img/piggy_bank.png', width: 70, height: 70,),
-                                  SizedBox(height: 9,),
-                                  Row(
-                                    children: [
-                                      Text('0', style: TextStyle(fontSize: 18, fontFamily: 'gaegu',fontWeight: FontWeight.w700)),
-                                      SizedBox(width: 3,),
-                                      Text("원", style: TextStyle(fontSize: 18, fontFamily: 'gaegu',color: Color(0xffB9A060))),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text('   내 절감량', style: TextStyle(fontSize: 26)),
-                                  Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Image.asset('assets/img/plug.png', width: 80, height: 83,),
-                                          Row(
-                                            children: [
-                                              Text('0', style: TextStyle(fontSize: 18, fontFamily: 'gaegu',fontWeight: FontWeight.w700)),
-                                              SizedBox(width: 3,),
-                                              Text("kWh", style: TextStyle(fontSize: 18, fontFamily: 'gaegu',color: Color(0xffB9A060))),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Image.asset('assets/img/cloud_co2.png', width: 60, height: 82,),
-                                          Row(
-                                            children: [
-                                              Text('0', style: TextStyle(fontSize: 18, fontFamily: 'gaegu',fontWeight: FontWeight.w700)),
-                                              SizedBox(width: 3,),
-                                              Text("gCO₂e", style: TextStyle(fontSize: 18, fontFamily: 'gaegu',color: Color(0xffB9A060))),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        Column(
-                            children: [
-                              SizedBox(height: 15,),
-                              Stack(
-                                  children: [
-                                    Container(
-                                      height: 50,
-                                      width : MediaQuery.of(context).size.width,
-                                      alignment: Alignment.bottomCenter,
-                                      child: Text("LV.1", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w900,fontFamily: 'gaegu')),
-                                    ),
-                                    Positioned(
-                                        left: MediaQuery.of(context).size.width*0.5+15,
-                                        bottom:20,
-                                        child: Image.asset('assets/img/notification.png', width:18, height: 18,))
-                                  ],
-                                ),
-                              Padding(
-                                padding : EdgeInsets.only(left : MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
-                                child: Container(
-                                  child: Image.asset('assets/img/sprout_and_barren_land.png',
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height*0.463,
-                                  ),
-                                )
-                              )
-                            ],
-                          ),
-                      ]
-                    ),
-            )
-        );
+      body: FutureBuilder(
+        future: AuthApi.instance.hasToken(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.data == true) {
+            try {
+              FutureBuilder(
+                future : UserApi.instance.accessTokenInfo(),
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                AccessTokenInfo tokenInfo = snapshot as AccessTokenInfo;
+                print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
+                return Home();
+                },
+              );
+              return Home();
+            }
+            catch (error) {
+              print(error);
+              return LoginPage();
+            }
+            }
+            else {
+            print('발급된 토큰 없음');
+            return LoginPage();
+            }
+        },
+      )
+      );
   }
 }
+
