@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,6 +10,7 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await Firebase.initializeApp();
   KakaoSdk.init(nativeAppKey: dotenv.env['kakaoKey']);
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -67,4 +69,5 @@ class _LoginState extends State<Login> {
       );
   }
 }
+
 
