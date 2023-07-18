@@ -65,6 +65,9 @@ class _SettingsState extends State<Settings> {
                   ],
                 ),
                 Text("생활 단위", style: TextStyle(fontSize: 30),),
+                Row(
+
+                ),
                 Text("에어컨 평소 설정 온도", style: TextStyle(fontSize: 30),),
                 Text("식사습관", style: TextStyle(fontSize: 30),),
                 Text("교통습관", style: TextStyle(fontSize: 30),),
