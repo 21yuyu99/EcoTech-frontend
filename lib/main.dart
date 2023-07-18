@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
           fontFamily: 'MainFont'
       ),
       home: Login(),
-
     );
   }
 }

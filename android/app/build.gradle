@@ -1,5 +1,6 @@
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
+
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
@@ -24,7 +25,6 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
     namespace "com.ecotech.frontend"
     compileSdkVersion flutter.compileSdkVersion
@@ -42,9 +42,6 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    def kakao_key = properties.getProperty('kakaoKey')
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.ecotech.frontend"
@@ -54,7 +51,6 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        mainfestPalceholders = [kakaoKey = kakao_key]
     }
 
     buildTypes {
