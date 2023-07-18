@@ -44,13 +44,13 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.white,
                   ),
                   width: MediaQuery.of(context).size.width,
-                  height: 300,
+                  height: 250,
                   child: Column(
                     children: [
                       SizedBox(height: 45,),
                       Text("서비스 이용을 위해 로그인이 필요해요",style: TextStyle(
                           fontSize: 20,fontWeight: FontWeight.w500),),
-                      SizedBox(height: 60,),
+                      SizedBox(height: 45,),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.02),
                         child: Column(
@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                               }
                             },
                               child: Image.asset('assets/img/kakao_btn.png'),),
-                            SizedBox(height: 35,),
+                            SizedBox(height: 5,),
                             Image.asset('assets/img/google_btn.png'),
                           ],
                         ),)
@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              Positioned(bottom: MediaQuery.of(context).size.height*0.5+100,
+              Positioned(bottom: MediaQuery.of(context).size.height*0.5+70,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.center,
