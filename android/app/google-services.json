@@ -14,7 +14,31 @@
       },
       "oauth_client": [
         {
-          "client_id": "815709120441-j6rf51tkfkg8ok33rdnme7pnhqjv48hc.apps.googleusercontent.com",
+          "client_id": "815709120441-0elekmrdjbi9c14c3bb328ht91gufu28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecotech.frontend",
+            "certificate_hash": "6732daa479c9f0b9f19d629e7c1b92aaecdd94db"
+          }
+        },
+        {
+          "client_id": "815709120441-1a5pdmutfkai7i5inhsfa0gg7ircmnb4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecotech.frontend",
+            "certificate_hash": "77472748a1453810976d87752e60a00cb8edfb10"
+          }
+        },
+        {
+          "client_id": "815709120441-sf1rbeih957mv1a11i0399bld02uif7m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecotech.frontend",
+            "certificate_hash": "d8ab57e6e5a73babc5cdda03e00ca3416fb3f667"
+          }
+        },
+        {
+          "client_id": "815709120441-gbdd42j4bngr4jcbehj43eojpqbkelku.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +51,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "815709120441-j6rf51tkfkg8ok33rdnme7pnhqjv48hc.apps.googleusercontent.com",
+              "client_id": "815709120441-gbdd42j4bngr4jcbehj43eojpqbkelku.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "815709120441-jjsl75g64i99jje3l2s9fdl0lfm798r1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ecotech.frontend"
+              }
             }
           ]
         }

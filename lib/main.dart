@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,7 +45,12 @@ class _LoginState extends State<Login> {
         future: AuthApi.instance.hasToken(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.data == true) {
-            try {
+              final google_user = FirebaseAuth.instance.currentUser;
+              if(google_user != null){
+                print("구글 로그인 확인");
+                return Home();
+              }
+              try {
               FutureBuilder(
                 future : UserApi.instance.accessTokenInfo(),
                 builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -61,8 +67,13 @@ class _LoginState extends State<Login> {
             }
             }
             else {
-            print('발급된 토큰 없음');
-            return LoginPage();
+              final google_user = FirebaseAuth.instance.currentUser;
+              if(google_user != null){
+                print("구글 로그인 확인");
+                return Home();
+              }
+              print('발급된 토큰 없음');
+              return LoginPage();
             }
         },
       )
