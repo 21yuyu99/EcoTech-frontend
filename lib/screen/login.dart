@@ -124,7 +124,12 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                   final googleAuth = await googleAccount.authentication;
                                   if (googleAuth.accessToken != null && googleAuth.idToken != null) {
+                                    final credential = GoogleAuthProvider.credential(
+                                      idToken: googleAuth.idToken,
+                                      accessToken: googleAuth.accessToken,
+                                    );
                                     try {
+                                      await FirebaseAuth.instance.signInWithCredential(credential);
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(builder: (context) => Home())

@@ -38,11 +38,12 @@ class _MyPageState extends State<MyPage> {
     if(FirebaseAuth.instance.currentUser!=null){
       try{
         print("구글 로그아웃");
-        await FirebaseAuth.instance.currentUser?.delete();
-        Navigator.push(
+        await FirebaseAuth.instance.signOut();
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
               builder: (context) => const LoginPage()),
+            (route) => false,
         );
       } catch(error){
         print("구글 로그아웃 실패");
@@ -54,10 +55,11 @@ class _MyPageState extends State<MyPage> {
         user.id;
         await kakao.UserApi.instance.logout();
         print('카카오 로그아웃 성공, SDK에서 토큰 삭제');
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
               builder: (context) => const LoginPage()),
+            (route) => false,
         );
       } catch (error) {
         print('사용자 정보 요청 실패 $error');
