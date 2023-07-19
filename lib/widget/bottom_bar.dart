@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/screen/mypage/setting.dart';
+import 'package:frontend/screen/mainPage.dart';
+import 'package:frontend/screen/mypage.dart';
 import 'package:frontend/screen/record/record_main.dart';
 import 'package:frontend/utils/colors.dart';
 
@@ -74,6 +76,12 @@ class _BottomBarState extends State<BottomBar> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const Settings()),
+              );
+              break;
+            case 3:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyPage()),
               );
               break;
           }
