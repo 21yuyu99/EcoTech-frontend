@@ -63,7 +63,7 @@ class _ResultPageState extends State<ResultPage> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(left:20),
-                              child: Text("내가 절약한 금액",
+                              child: Text("내가 절약한 금액 ",
                                 style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
                               ),
                             ),
@@ -76,22 +76,20 @@ class _ResultPageState extends State<ResultPage> {
                                     return Stack(
                                       children: <Widget>[
                                         Positioned(
-                                          left: 15, // Adjust this as needed
-                                          right: 5,
-                                          top: 30, // Adjust this as needed
+                                          top: 35, // Adjust this as needed
                                           child: Dialog(
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                             child: Container(
-                                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                              padding:EdgeInsets.only(top:15,left: 5,right: 5),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: <Widget>[
-                                                  Text('추산된 값으로 실제 값과 다를 수 있습니다.'),
+                                                  Text('  추산된 값으로 실제 값과 다를 수 있습니다  ',style: TextStyle(fontSize: 16),),
                                                   SizedBox(
                                                     width: 50,
                                                     height: 40,
                                                     child: TextButton(
-                                                      child: Text('닫기', style: TextStyle(fontSize: 10, color: Colors.black, fontWeight: FontWeight.w900),),
+                                                      child: Text('닫기', style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),),
                                                       style: TextButton.styleFrom(
                                                         padding: EdgeInsets.all(0),
                                                       ),

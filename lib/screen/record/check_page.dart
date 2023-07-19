@@ -14,12 +14,13 @@ class _CheckPageState extends State<CheckPage> {
     "사용하지 않는 플러그를 모두 뽑았나요?",
     "오늘 음식을 남기지 않고 드셨나요?",
     "출근길에 대중교통을 이용하셨나요?",
+    "분리배출을 잘 실천하셨나요?"
   ];
   List<bool> yesList = [
-    false,false,false
+    false,false,false,false
   ];
   List<bool> noList = [
-    true,true,true
+    true,true,true,true
   ];
   int degree = 26;
   @override
@@ -169,6 +170,7 @@ class _CheckPageState extends State<CheckPage> {
                   ),
                 )
                 ).toList(),
+                SizedBox(height: 15,),
                 Container(
                   child: Column(
                     children: [Text("에어컨을 몇도로 설정하고 생활하셨나요?",

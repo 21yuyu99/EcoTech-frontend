@@ -13,17 +13,18 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   int degree = 26;
-  final _ProvinceList = ['경기도', '강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주도'];
-  var _SelectedProvinceValue = '경기도';
+  final _ProvinceList = ['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '경기도', "강원도",
+  "충청북도","충청남도","전라북도","전라남도","경상북도","경상남도","제주특별자치도","세종특별자치시"];
+  var _SelectedProvinceValue = '서울특별시';
   final _CityList = ['서울시', '인천시', '부산시', '대구시', '대전시', '광주시', '...'];
   var _SelectedCityValue = '서울시';
   final _CommutingHabitList = ['자차 이용', '대중교통 이용', '도보/자전거 이용','재택근무'];
   var _SelectedCommutingHabitValue = '자차 이용';
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const BottomBar(selectedIdx: 1,),
+      bottomNavigationBar: const BottomBar(selectedIdx: 3,),
       floatingActionButton: Container(
         decoration: BoxDecoration(
         boxShadow: <BoxShadow>[
