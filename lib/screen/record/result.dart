@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screen/record/by_item.dart';
 import 'package:frontend/utils/colors.dart';
 import 'package:frontend/widget/bottom_bar.dart';
 
@@ -27,12 +28,16 @@ class _ResultPageState extends State<ResultPage> {
         ),
         width:90,
         height: 45,
-        margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height*0.73),
+        margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height*0.76),
         child: FloatingActionButton(
             elevation: 0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0))),
           onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ByItemPage()),
+            );
           },
           backgroundColor: AppColor.accentColor,
           child: Text("항목별 보기",style: TextStyle(fontSize: 19,fontWeight: FontWeight.w500),),
@@ -41,65 +46,120 @@ class _ResultPageState extends State<ResultPage> {
       body: SingleChildScrollView(
         child: Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top:40,bottom:15),
+            height: MediaQuery.of(context).size.height,
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left:20,bottom:18),
-                        child: Text("내가 절약한 금액",
-                          style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                              padding: EdgeInsets.only(left:25,right:50,top: 0),
-                              child : Image.asset('assets/img/record/piggy_bank.png',width: 100,)
-                          ),
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                  SizedBox(width: 50,),
-                                  Text("5,268.2원",style: TextStyle(fontFamily: "gaegu",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),),
-                                ],
-                              ),
-                              SizedBox(height: 15,),
-                              Row(
-                                children: [
-                                  Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                  SizedBox(width: 50,),
-                                  Text("10,536원",style: TextStyle(fontFamily: "gaegu",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),),
-                                ],
-                              ),
-                              SizedBox(height: 15,),
-                              Row(
-                                children: [
-                                  Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                  SizedBox(width: 50,),
-                                  Text("168,582원",style: TextStyle(fontFamily: "gaegu",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),),
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 20,),
                   Container(
+                    height: MediaQuery.of(context).size.height*0.3,
+                    padding: EdgeInsets.only(bottom: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left:20),
+                              child: Text("내가 절약한 금액 ",
+                                style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTapDown: (TapDownDetails details) {
+                                showDialog(
+                                  barrierColor: Colors.transparent,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Stack(
+                                      children: <Widget>[
+                                        Positioned(
+                                          top: 35, // Adjust this as needed
+                                          child: Dialog(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                            child: Container(
+                                              padding:EdgeInsets.only(top:15,left: 5,right: 5),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Text('  추산된 값으로 실제 값과 다를 수 있습니다  ',style: TextStyle(fontSize: 16),),
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 40,
+                                                    child: TextButton(
+                                                      child: Text('닫기', style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),),
+                                                      style: TextButton.styleFrom(
+                                                        padding: EdgeInsets.all(0),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Image.asset('assets/img/alert.png', width: 15, height: 15,),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20,),
+                        Row(
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.only(left:25,right:50,top: 0),
+                                child : Image.asset('assets/img/record/piggy_bank.png',width: 100,)
+                            ),
+                        Column(
+                          children: [
+                            Row(
+                                  children: [
+                                    Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                    SizedBox(width: 50,),
+                                    Text("5,268.2원",style: TextStyle(fontFamily: "gaegu",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),),
+                                  ],
+                                ),
+                                SizedBox(height: 15,),
+                                Row(
+                                  children: [
+                                    Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                    SizedBox(width: 50,),
+                                    Text("10,536원",style: TextStyle(fontFamily: "gaegu",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),),
+                                  ],
+                                ),
+                                SizedBox(height: 15,),
+                                Row(
+                                  children: [
+                                    Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                    SizedBox(width: 50,),
+                                    Text("168,582원",style: TextStyle(fontFamily: "gaegu",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.2,
+                    margin: EdgeInsets.only(top: 20,bottom: 20),
                     padding: EdgeInsets.only(bottom:15,top:10),
                     decoration: BoxDecoration(
                       color : Colors.white,
