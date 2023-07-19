@@ -7,6 +7,7 @@ import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mainPage.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:http/http.dart' as http;
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +50,8 @@ class _LoginState extends State<Login> {
               if(google_user != null){
                 DisplayName = google_user.displayName!;
                 print('구글닉네임 : $DisplayName');
+                print('UID: ${google_user.uid}');
+                print('email: ${google_user.email}');
                 return Home();
               }
               try {
@@ -73,6 +76,8 @@ class _LoginState extends State<Login> {
                 print("구글 로그인 확인");
                 DisplayName = google_user.displayName!;
                 print('구글닉네임 : $DisplayName');
+                print('UID: ${google_user.uid}');
+                print('email: ${google_user.email}');
                 return Home();
               }
               print('발급된 토큰 없음');

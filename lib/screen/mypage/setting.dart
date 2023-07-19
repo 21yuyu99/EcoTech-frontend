@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mypage/mypage.dart';
 import '../../utils/colors.dart';
 import '../../widget/bottom_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -16,6 +19,7 @@ class _SettingsState extends State<Settings> {
   final _ProvinceList = ['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '경기도', "강원도",
   "충청북도","충청남도","전라북도","전라남도","경상북도","경상남도","제주특별자치도","세종특별자치시"];
   var _SelectedProvinceValue = '서울특별시';
+  final _ProvinceCodeList = [11, 21, 22, 23, 24, 25, 26, 31, 32, 33, 34, 35, 36, 37, 38, 39, 41];
   final _CityList = ['서울시', '인천시', '부산시', '대구시', '대전시', '광주시', '...'];
   var _SelectedCityValue = '서울시';
   final _CommutingHabitList = ['자차 이용', '대중교통 이용', '도보/자전거 이용','재택근무'];
@@ -99,9 +103,17 @@ class _SettingsState extends State<Settings> {
                                );
                              },
                            ).toList(),
-                           onChanged: (value) {
-                             setState(() {
+                           onChanged: (value) async {
+                             setState(()  {
                                _SelectedProvinceValue = value!;
+                             });
+                             int index = _ProvinceList.indexOf(_SelectedProvinceValue);
+                             print(index);
+                             print(_ProvinceCodeList[index]);
+                             var url = Uri.http('ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036', 'user/region');
+                             var response = await http.post(url, body: {
+                               "sido" : _SelectedProvinceValue,
+                               "code" : _ProvinceCodeList[index]
                              });
                            },
                          ),
