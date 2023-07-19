@@ -47,7 +47,8 @@ class _LoginState extends State<Login> {
             if (snapshot.data == true) {
               final google_user = FirebaseAuth.instance.currentUser;
               if(google_user != null){
-                print("구글 로그인 확인");
+                DisplayName = google_user.displayName!;
+                print('구글닉네임 : $DisplayName');
                 return Home();
               }
               try {
@@ -70,6 +71,8 @@ class _LoginState extends State<Login> {
               final google_user = FirebaseAuth.instance.currentUser;
               if(google_user != null){
                 print("구글 로그인 확인");
+                DisplayName = google_user.displayName!;
+                print('구글닉네임 : $DisplayName');
                 return Home();
               }
               print('발급된 토큰 없음');
