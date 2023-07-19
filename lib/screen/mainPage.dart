@@ -15,11 +15,11 @@ class _HomeState extends State<Home> {
         bottomNavigationBar: const BottomBar(selectedIdx: 0,),
         body: Container(
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.only(top: 45),
+          padding: EdgeInsets.only(top: 80),
           child: Column(
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height*0.233,
+                  height: MediaQuery.of(context).size.height*0.3,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -77,7 +77,6 @@ class _HomeState extends State<Home> {
                 ),
                 Column(
                   children: [
-                    SizedBox(height: 15,),
                     Stack(
                       children: [
                         Container(
@@ -93,11 +92,10 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                     Padding(
-                        padding : EdgeInsets.only(left : MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
+                        padding : EdgeInsets.only(top:20,left : MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                         child: Container(
                           child: Image.asset('assets/img/sprout_and_barren_land.png',
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height*0.463,
                           ),
                         )
                     )

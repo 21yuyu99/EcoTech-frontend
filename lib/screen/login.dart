@@ -13,6 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +63,35 @@ class _LoginPageState extends State<LoginPage> {
                             },
                               child: Image.asset('assets/img/kakao_btn.png'),),
                             SizedBox(height: 5,),
-                            InkWell(onTap:()=>{google(context)},child : Image.asset('assets/img/google_btn.png'),)
+                            InkWell(onTap:() async {
+                                GoogleSignIn googleSignIn = GoogleSignIn();
+                                final googleAccount = await googleSignIn.signIn();
+                                if (googleAccount != null) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  final googleAuth = await googleAccount.authentication;
+                                  if (googleAuth.accessToken != null && googleAuth.idToken != null) {
+                                    try {
+                                      await FirebaseAuth.instance.signInWithCredential(GoogleAuthProvider.credential(
+                                        idToken: googleAuth.idToken,
+                                        accessToken: googleAuth.accessToken,
+                                      ));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => Home())
+                                      );
+                                    } on FirebaseAuthException catch (e) {
+                                      print('error $e');
+                                    } catch (e) {
+                                      print('error $e');
+                                    }
+                                  } else
+                                    print('error');
+                                } else
+                                  print('뒤로가기 error');
+                            },
+                              child : Image.asset('assets/img/google_btn.png'),)
                           ],
                         ),)
                     ],
@@ -75,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.center,
                   child: Image.asset('assets/img/circle_logo.png',width: 80),
                 ),),
+              isLoading?Center(child: CircularProgressIndicator(),):Text(""),
                 ]
           )));}
   }
@@ -125,7 +155,7 @@ void kakao(BuildContext context) async{
     }
   }
 }
-void google(BuildContext context) async{
+void google(BuildContext context) async {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   final googleAccount = await _googleSignIn.signIn();
 
