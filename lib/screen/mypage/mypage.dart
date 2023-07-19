@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screen/login.dart';
+import 'package:frontend/screen/mypage/setting.dart';
 import 'package:frontend/widget/bottom_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -51,6 +52,12 @@ class _MyPageState extends State<MyPage> {
                   },
                   child: Text("구글 로그아웃")),
             ),
+            TextButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Settings()),
+              );
+            }, child: Text("기본 설정"))
           ],
         )
     );
