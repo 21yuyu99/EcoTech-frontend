@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/main.dart';
-import 'package:frontend/screen/mypage/setting.dart';
 import 'package:frontend/screen/mainPage.dart';
 import 'package:frontend/screen/mypage/mypage.dart';
 import 'package:frontend/screen/record/record_main.dart';
@@ -17,8 +15,8 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  List iconList = [Icon(Icons.home),Icon(Icons.edit_note),Icon(Icons.eco),Icon(Icons.person)];
-  List<String> menuNameList = ["홈","기록","스토어","마이페이지"];
+  List iconList = [Icon(Icons.home),Icon(Icons.edit_note),Icon(Icons.person)];
+  List<String> menuNameList = ["홈","기록","마이페이지"];
   @override
   Widget build(BuildContext context) {
     int _selectedIndex = widget.selectedIdx;

@@ -139,7 +139,7 @@ bool level_msg = false;
                     Padding(
                         padding : EdgeInsets.only(top:20,left : MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                         child: Container(
-                          child: Image.asset('assets/img/sprout_and_barren_land.png',
+                          child: Image.asset('assets/img/level_1.png',
                             width: MediaQuery.of(context).size.width,
                           ),
                         )
