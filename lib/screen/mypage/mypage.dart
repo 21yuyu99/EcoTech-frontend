@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart' as google;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mypage/setting.dart';
 import 'package:frontend/widget/bottom_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -13,37 +14,56 @@ class MyPage extends StatefulWidget {
   State<MyPage> createState() => _MyPageState();
 }
 
-enum AuthMethod {
-  google,
-  kakao,
-}
-
-class AuthService {
-  static final AuthService _instance = AuthService._();
-
-  factory AuthService() {
-    return _instance;
-  }
-
-  AuthService._();
-  AuthMethod? method;
-
-  void setMethod(AuthMethod method){
-    this.method = method;
-  }
-
-  Future<void> logout() async {
-    if (method == AuthMethod.google) {
-      GoogleSignIn googleSignIn = GoogleSignIn();
-      await googleSignIn.signOut();
-    } else if (method == AuthMethod.kakao) {
-      await UserApi.instance.logout();
+  void nick_name() async {
+      try {
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final google.User? user = auth.currentUser;
+        final uid = user?.uid;
+        print(uid);
+      } catch(error) {
+          try{
+            kakao.User user = await kakao.UserApi.instance.me();
+            print('사용자 정보 요청 성공'
+                '\n회원번호: ${user.id}'
+                '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+            );
+          } catch (error) {
+             print('사용자 정보 요청 실패 $error');
+        }
     }
-    method = null;
-  }
 }
 
 class _MyPageState extends State<MyPage> {
+  void logout() async {
+    if(FirebaseAuth.instance.currentUser!=null){
+      try{
+        print("구글 로그아웃");
+        await FirebaseAuth.instance.currentUser?.delete();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const LoginPage()),
+        );
+      } catch(error){
+        print("구글 로그아웃 실패");
+      }
+    }
+    else{
+      try{
+        kakao.User user = await kakao.UserApi.instance.me();
+        user.id;
+        await kakao.UserApi.instance.logout();
+        print('카카오 로그아웃 성공, SDK에서 토큰 삭제');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const LoginPage()),
+        );
+      } catch (error) {
+        print('사용자 정보 요청 실패 $error');
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,18 +73,13 @@ class _MyPageState extends State<MyPage> {
         children: [
           Row(
             children: [
-              Text(LoginPage.getNickname()!, style: TextStyle(fontSize: 40, color: Colors.black, fontWeight: FontWeight.w500)),
+              Text("", style: TextStyle(fontSize: 40, color: Colors.black, fontWeight: FontWeight.w500)),
               const SizedBox(width: 15,),
               Column(
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      AuthService().logout();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
-                      );
+                      logout();
                     },
                     child: const Text(
                       "로그아웃",
