@@ -34,6 +34,7 @@ class _ByItemPageState extends State<ByItemPage> {
       ),
       bottomNavigationBar: BottomBar(selectedIdx: 1,),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
             padding: EdgeInsets.only(top: 15),

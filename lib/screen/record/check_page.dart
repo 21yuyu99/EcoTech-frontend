@@ -62,7 +62,7 @@ class _CheckPageState extends State<CheckPage> {
                 ),
               ),
               Positioned(
-                  bottom: 28,
+                  bottom: 43,
                   left:-8,
                   child: Container(
                     child: Image(
@@ -93,134 +93,138 @@ class _CheckPageState extends State<CheckPage> {
       ),
         bottomNavigationBar: BottomBar(selectedIdx: 1,),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 25,
-              ),
-              ...checkTextList.map((question) => Column(
-                children: [
-                  Text(question,
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                ...checkTextList.map((question) => Container(
+                  padding: EdgeInsets.only(top: 25),
+                  child: Column(
                     children: [
-                      Text("예",style: TextStyle(fontSize: 20,fontFamily: 'gaegu',fontWeight:FontWeight.w500),),
-                      Transform.scale(
-                        scale: 1.4,
-                        child: Checkbox(
-                          activeColor : Colors.black,
-                          checkColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2.0),
-                          ),
-                          side: MaterialStateBorderSide.resolveWith(
-                                (states) => BorderSide(width: 2.0, color: Colors.black),
-                          ),
-                          value: yesList[checkTextList.indexOf(question)],
-                          onChanged:(value){
-                            setState(() {
-                              yesList[checkTextList.indexOf(question)] = !yesList[checkTextList.indexOf(question)];
-                              noList[checkTextList.indexOf(question)] = !noList[checkTextList.indexOf(question)];
-                            });
-                          },
+                      Text(question,
+                        style: TextStyle(
+                          fontSize: 24,
                         ),
                       ),
-                      SizedBox(width: 20,),
-                      Text("아니오",style: TextStyle(fontSize: 20,fontFamily: 'gaegu',fontWeight:FontWeight.w500)),
-                      Transform.scale(
-                        scale:1.4,
-                        child :Checkbox(
-                          activeColor : Colors.black,
-                          checkColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2.0),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("예",style: TextStyle(fontSize: 20,fontFamily: 'gaegu',fontWeight:FontWeight.w500),),
+                          Transform.scale(
+                            scale: 1.4,
+                            child: Checkbox(
+                              activeColor : Colors.black,
+                              checkColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.0),
+                              ),
+                              side: MaterialStateBorderSide.resolveWith(
+                                    (states) => BorderSide(width: 2.0, color: Colors.black),
+                              ),
+                              value: yesList[checkTextList.indexOf(question)],
+                              onChanged:(value){
+                                setState(() {
+                                  yesList[checkTextList.indexOf(question)] = !yesList[checkTextList.indexOf(question)];
+                                  noList[checkTextList.indexOf(question)] = !noList[checkTextList.indexOf(question)];
+                                });
+                              },
+                            ),
                           ),
-                          side: MaterialStateBorderSide.resolveWith(
-                                (states) => BorderSide(width: 2.0, color: Colors.black),
-                          ),
-                          value: noList[checkTextList.indexOf(question)],
-                          onChanged:(value){
-                            setState(() {
-                              yesList[checkTextList.indexOf(question)] = !yesList[checkTextList.indexOf(question)];
-                              noList[checkTextList.indexOf(question)] = !noList[checkTextList.indexOf(question)];
-                            });
-                          },
-                        ),
-                      )
+                          SizedBox(width: 20,),
+                          Text("아니오",style: TextStyle(fontSize: 20,fontFamily: 'gaegu',fontWeight:FontWeight.w500)),
+                          Transform.scale(
+                            scale:1.4,
+                            child :Checkbox(
+                              activeColor : Colors.black,
+                              checkColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.0),
+                              ),
+                              side: MaterialStateBorderSide.resolveWith(
+                                    (states) => BorderSide(width: 2.0, color: Colors.black),
+                              ),
+                              value: noList[checkTextList.indexOf(question)],
+                              onChanged:(value){
+                                setState(() {
+                                  yesList[checkTextList.indexOf(question)] = !yesList[checkTextList.indexOf(question)];
+                                  noList[checkTextList.indexOf(question)] = !noList[checkTextList.indexOf(question)];
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Image.asset('assets/img/record/grey_line.png'),
+                      SizedBox(
+                        height: 10,
+                      ),
                     ],
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Image.asset('assets/img/record/grey_line.png'),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
-              ),
-              ).toList(),
-              Container(
-                child: Column(
-                  children: [Text("에어컨을 몇도로 설정하고 생활하셨나요?",
-                    style: TextStyle(
-                      fontSize: 24,
+                )
+                ).toList(),
+                Container(
+                  child: Column(
+                    children: [Text("에어컨을 몇도로 설정하고 생활하셨나요?",
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
                     ),
-                  ),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 18,vertical: 8),
-                          decoration: BoxDecoration(
-                              border: Border.all(color:Colors.black,width: 2.0),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8.0),
-                              )
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 18,vertical: 8),
+                            decoration: BoxDecoration(
+                                border: Border.all(color:Colors.black,width: 2.0),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
+                                )
+                            ),
+                            child: Text(degree.toString(),style:TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                           ),
-                          child: Text(degree.toString(),style:TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                        ),
-                        SizedBox(width: 15,),
-                        Text(
-                          "℃",style: TextStyle(fontSize: 18),
-                        ),
-                        SizedBox(width: 10,),
-                        Column(
-                          children: [
-                            IconButton(
-                              onPressed: (){
-                                setState(() {
-                                  degree++;
-                                });
-                              },
-                              padding: EdgeInsets.all(0),
-                              iconSize: 35,
-                              icon: Image.asset('assets/img/record/up_arrow.png'),
-                            ),
-                            IconButton(
-                              onPressed: (){
-                                setState(() {
-                                  degree--;
-                                });
-                              },
-                              iconSize: 30,
-                              icon: Image.asset('assets/img/record/down_arrow.png'),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),],
-                ),
-              )
-            ],
-          ),
+                          SizedBox(width: 15,),
+                          Text(
+                            "℃",style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(width: 10,),
+                          Column(
+                            children: [
+                              IconButton(
+                                onPressed: (){
+                                  setState(() {
+                                    degree++;
+                                  });
+                                },
+                                padding: EdgeInsets.all(0),
+                                iconSize: 35,
+                                icon: Image.asset('assets/img/record/up_arrow.png'),
+                              ),
+                              IconButton(
+                                onPressed: (){
+                                  setState(() {
+                                    degree--;
+                                  });
+                                },
+                                iconSize: 30,
+                                icon: Image.asset('assets/img/record/down_arrow.png'),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),],
+                  ),
+                )
+              ],
+            ),
+          )
         ),
         );
   }
