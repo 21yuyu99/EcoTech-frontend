@@ -57,21 +57,73 @@ class _ResultPageState extends State<ResultPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(left:20,bottom:30),
-                          child: Text("내가 절약한 금액",
-                            style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left:20),
+                              child: Text("내가 절약한 금액",
+                                style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTapDown: (TapDownDetails details) {
+                                showDialog(
+                                  barrierColor: Colors.transparent,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Stack(
+                                      children: <Widget>[
+                                        Positioned(
+                                          left: 15, // Adjust this as needed
+                                          right: 5,
+                                          top: 30, // Adjust this as needed
+                                          child: Dialog(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                                            child: Container(
+                                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Text('추산된 값으로 실제 값과 다를 수 있습니다.'),
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 40,
+                                                    child: TextButton(
+                                                      child: Text('닫기', style: TextStyle(fontSize: 10, color: Colors.black, fontWeight: FontWeight.w900),),
+                                                      style: TextButton.styleFrom(
+                                                        padding: EdgeInsets.all(0),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Image.asset('assets/img/alert.png', width: 15, height: 15,),
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 20,),
                         Row(
                           children: [
                             Padding(
                                 padding: EdgeInsets.only(left:25,right:50,top: 0),
                                 child : Image.asset('assets/img/record/piggy_bank.png',width: 100,)
                             ),
-                            Column(
-                              children: [
-                                Row(
+                        Column(
+                          children: [
+                            Row(
                                   children: [
                                     Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
                                     SizedBox(width: 50,),
