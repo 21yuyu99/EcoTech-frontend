@@ -1,49 +1,81 @@
+import 'package:firebase_auth/firebase_auth.dart' as google;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mypage/setting.dart';
 import 'package:frontend/widget/bottom_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
 
   @override
   State<MyPage> createState() => _MyPageState();
+
 }
 
-enum AuthMethod {
-  google,
-  kakao,
-}
-
-class AuthService {
-  static final AuthService _instance = AuthService._();
-
-  factory AuthService() {
-    return _instance;
-  }
-
-  AuthService._();
-  AuthMethod? method;
-
-  void setMethod(AuthMethod method){
-    this.method = method;
-  }
-
-  Future<void> logout() async {
-    if (method == AuthMethod.google) {
-      GoogleSignIn googleSignIn = GoogleSignIn();
-      await googleSignIn.signOut();
-    } else if (method == AuthMethod.kakao) {
-      await UserApi.instance.logout();
-    }
-    method = null;
-  }
-}
 
 class _MyPageState extends State<MyPage> {
+  String? nickname;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNickname();
+  }
+
+  void fetchNickname() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final google.User? user = auth.currentUser;
+
+    if (user != null) {
+      setState(() {
+        nickname = user.displayName;
+      });
+    } else {
+      try {
+        final kakao.User kakaoUser = await kakao.UserApi.instance.me();
+        setState(() {
+          nickname = kakaoUser.kakaoAccount?.profile?.nickname;
+        });
+      } catch (e) {
+        print('사용자 정보 요청 실패: $e');
+      }
+    }
+  }
+  void logout() async {
+    if(FirebaseAuth.instance.currentUser!=null){
+      try{
+        print("구글 로그아웃");
+        await FirebaseAuth.instance.signOut();
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const LoginPage()),
+            (route) => false,
+        );
+      } catch(error){
+        print("구글 로그아웃 실패");
+      }
+    }
+    else{
+      try{
+        kakao.User user = await kakao.UserApi.instance.me();
+        user.id;
+        await kakao.UserApi.instance.logout();
+        print('카카오 로그아웃 성공, SDK에서 토큰 삭제');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const LoginPage()),
+            (route) => false,
+        );
+      } catch (error) {
+        print('사용자 정보 요청 실패 $error');
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,32 +85,28 @@ class _MyPageState extends State<MyPage> {
         children: [
           Row(
             children: [
-              Text(LoginPage.getNickname()!, style: TextStyle(fontSize: 40, color: Colors.black, fontWeight: FontWeight.w500)),
+              const SizedBox(width: 25,),
+              Text("${nickname}님"?? "loading", style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.w500)),
               const SizedBox(width: 15,),
               Column(
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      AuthService().logout();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
-                      );
+                      logout();
                     },
                     child: const Text(
                       "로그아웃",
-                      style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w900),
+                      style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w400),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.withOpacity(0.5),
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      backgroundColor: Color(0xffFFF1A7),
+                      padding: EdgeInsets.all(0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(height: 50,),
                 ],
               ),
             ],
@@ -87,7 +115,7 @@ class _MyPageState extends State<MyPage> {
             children: [
               Text("LV.1", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),),
               const SizedBox(height: 30,),
-              Image.asset('assets/img/lv1Icon.png',),
+              Image.asset('assets/img/lv1Icon.png', height: 230, width: 230,),
             ],
           ),
           Material(

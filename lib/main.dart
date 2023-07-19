@@ -1,6 +1,5 @@
 import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,48 +53,47 @@ class _LoginState extends State<Login> {
       body: FutureBuilder(
         future: AuthApi.instance.hasToken(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if(snapshot.hasData){
             if (snapshot.data == true) {
               final google_user = FirebaseAuth.instance.currentUser;
               if(google_user != null){
-                DisplayName = google_user.displayName!;
-                print('구글닉네임 : $DisplayName');
-                print('UID: ${google_user.uid}');
-                print('email: ${google_user.email}');
                 return Home();
               }
               try {
-              FutureBuilder(
-                future : UserApi.instance.accessTokenInfo(),
-                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                AccessTokenInfo tokenInfo = snapshot as AccessTokenInfo;
-                print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
+                FutureBuilder(
+                  future : UserApi.instance.accessTokenInfo(),
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    AccessTokenInfo tokenInfo = snapshot as AccessTokenInfo;
+                    print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
+                    User user =  UserApi.instance.me() as User;
+                    print('카카오톡 닉네임 : ${user.kakaoAccount?.profile?.nickname}');
+                    return Home();
+                  },
+                );
                 return Home();
-                },
-              );
-              return Home();
-            }
-            catch (error) {
-              print(error);
-              return LoginPage();
-            }
+              }
+              catch (error) {
+                print(error);
+                return LoginPage();
+              }
             }
             else {
               final google_user = FirebaseAuth.instance.currentUser;
               if(google_user != null){
                 print("구글 로그인 확인");
-                DisplayName = google_user.displayName!;
-                print('구글닉네임 : $DisplayName');
-                print('UID: ${google_user.uid}');
-                print('email: ${google_user.email}');
                 return Home();
+              } else {
+                print('발급된 토큰 없음');
+                return LoginPage();
               }
-              print('발급된 토큰 없음');
-              return LoginPage();
             }
-        },
-      )
+          }
+          else{
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          })
       );
   }
 }
-
-

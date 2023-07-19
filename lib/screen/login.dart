@@ -1,19 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'mainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:frontend/screen/mypage/mypage.dart';
 
 String? DisplayName = '';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
-
-  static String? getNickname() {
-    return DisplayName;
-  }
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -73,9 +68,6 @@ class _LoginPageState extends State<LoginPage> {
                                   try {
                                   await UserApi.instance.loginWithKakaoTalk();
                                   print('카카오톡으로 로그인 성공');
-                                  User user = await UserApi.instance.me();
-                                  print('카카오톡 닉네임 : ${user.kakaoAccount?.profile?.nickname}');
-                                  DisplayName = user.kakaoAccount?.profile?.nickname;
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const Home()),
@@ -87,9 +79,6 @@ class _LoginPageState extends State<LoginPage> {
                                   try {
                                   await UserApi.instance.loginWithKakaoAccount();
                                   print('카카오계정으로 로그인 성공');
-                                  User user = await UserApi.instance.me();
-                                  print('카카오톡 닉네임 : ${user.kakaoAccount?.profile?.nickname}');
-                                  DisplayName = user.kakaoAccount?.profile?.nickname;
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const Home()),
@@ -107,9 +96,6 @@ class _LoginPageState extends State<LoginPage> {
                                   try {
                                   await UserApi.instance.loginWithKakaoAccount();
                                   print('카카오계정으로 로그인 성공');
-                                  User user = await UserApi.instance.me();
-                                  print('카카오톡 닉네임 : ${user.kakaoAccount?.profile?.nickname}');
-                                  DisplayName = user.kakaoAccount?.profile?.nickname;
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const Home()),
@@ -138,16 +124,12 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                   final googleAuth = await googleAccount.authentication;
                                   if (googleAuth.accessToken != null && googleAuth.idToken != null) {
+                                    final credential = GoogleAuthProvider.credential(
+                                      idToken: googleAuth.idToken,
+                                      accessToken: googleAuth.accessToken,
+                                    );
                                     try {
-                                      final userCredential = await FirebaseAuth.instance.signInWithCredential(GoogleAuthProvider.credential(
-                                        idToken: googleAuth.idToken,
-                                        accessToken: googleAuth.accessToken,
-                                      ));
-                                      final user = userCredential.user;
-                                      if (user != null) {
-                                        DisplayName = user.displayName!;
-                                        print('구글닉네임 : $DisplayName');
-                                      }
+                                      await FirebaseAuth.instance.signInWithCredential(credential);
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(builder: (context) => Home())
