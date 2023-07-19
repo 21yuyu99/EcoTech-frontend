@@ -113,7 +113,6 @@ class _ResultPageState extends State<ResultPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 15,),
                       Row(
                         children: [
                           Padding(
