@@ -58,8 +58,58 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: [
                             InkWell(onTap:
-                                () {
-                              kakao(context);
+                                () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  if (await isKakaoTalkInstalled()) {
+                                  try {
+                                  await UserApi.instance.loginWithKakaoTalk();
+                                  print('카카오톡으로 로그인 성공');
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const Home()),
+                                  );
+                                  } catch (error) {
+                                  print('카카오톡으로 로그인 실패 $error');
+
+                                  // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+                                  try {
+                                  await UserApi.instance.loginWithKakaoAccount();
+                                  print('카카오계정으로 로그인 성공');
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const Home()),
+                                  );
+                                  } catch (error) {
+                                  print('카카오계정으로 로그인 실패 $error');
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => LoginPage()),
+                                  );
+                                  }
+                                  }
+                                  }
+                                  else {
+                                  try {
+                                  await UserApi.instance.loginWithKakaoAccount();
+                                  print('카카오계정으로 로그인 성공');
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const Home()),
+                                  );
+                                  }
+                                  catch (error) {
+                                  print('카카오계정으로 로그인 실패 $error');
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => LoginPage()),
+                                  );
+                                  }
+                                  }
+                                  setState(() {
+                                    isLoading = false;
+                                  });
                             },
                               child: Image.asset('assets/img/kakao_btn.png'),),
                             SizedBox(height: 5,),
@@ -90,6 +140,9 @@ class _LoginPageState extends State<LoginPage> {
                                     print('error');
                                 } else
                                   print('뒤로가기 error');
+                                setState(() {
+                                  isLoading = false;
+                                });
                             },
                               child : Image.asset('assets/img/google_btn.png'),)
                           ],
@@ -108,77 +161,3 @@ class _LoginPageState extends State<LoginPage> {
                 ]
           )));}
   }
-void kakao(BuildContext context) async{
-  if (await isKakaoTalkInstalled()) {
-    try {
-      await UserApi.instance.loginWithKakaoTalk();
-      print('카카오톡으로 로그인 성공');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Home()),
-      );
-    } catch (error) {
-      print('카카오톡으로 로그인 실패 $error');
-
-      // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
-      try {
-        await UserApi.instance.loginWithKakaoAccount();
-        print('카카오계정으로 로그인 성공');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Home()),
-        );
-      } catch (error) {
-        print('카카오계정으로 로그인 실패 $error');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
-        );
-      }
-    }
-  }
-  else {
-    try {
-      await UserApi.instance.loginWithKakaoAccount();
-      print('카카오계정으로 로그인 성공');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Home()),
-      );
-    }
-    catch (error) {
-      print('카카오계정으로 로그인 실패 $error');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
-    }
-  }
-}
-void google(BuildContext context) async {
-  GoogleSignIn _googleSignIn = GoogleSignIn();
-  final googleAccount = await _googleSignIn.signIn();
-
-  if (googleAccount != null) {
-    final googleAuth = await googleAccount.authentication;
-    if (googleAuth.accessToken != null && googleAuth.idToken != null) {
-
-      try {
-        await FirebaseAuth.instance.signInWithCredential(GoogleAuthProvider.credential(
-          idToken: googleAuth.idToken,
-          accessToken: googleAuth.accessToken,
-        ));
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Home())
-        );
-      } on FirebaseAuthException catch (e) {
-        print('error $e');
-      } catch (e) {
-        print('error $e');
-      }
-    } else
-      print('error');
-  } else
-    print('뒤로가기 error');
-}

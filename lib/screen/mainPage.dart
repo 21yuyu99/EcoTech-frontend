@@ -8,11 +8,49 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
+bool level_msg = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: const BottomBar(selectedIdx: 0,),
+        floatingActionButton: level_msg?Container(
+          margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height*0.31,
+              right: 20,left: 20
+          ),
+          width: 280,
+          height: 60,
+          child: FloatingActionButton(
+            onPressed: (){},
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                side: BorderSide(width: 1,color: Color(0xffFFD600)),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15.0),
+                )),
+            elevation: 0,
+            child: Column(
+              children: [
+                Align(alignment: Alignment.topRight,child: TextButton(onPressed: (){
+                  setState(() {
+                    level_msg = false;
+                  });
+                },
+                    style: TextButton.styleFrom(minimumSize: Size.zero,
+                      padding: EdgeInsets.only(right: 20,top: 15),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ), child: Text("x",style: TextStyle(color: Colors.black),)),),
+                Container(
+                  margin: EdgeInsets.only(right: 10),
+                  child: Align(alignment: Alignment.topCenter,
+                    child: Text("환경 보호 활동으로 레벨을 올려보세요!",
+                      style: TextStyle(color: Colors.black,
+                          height: 0.7
+                      ),),),
+                )
+              ],
+            ),
+          ),
+        ):null,
         body: Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.only(top: 80),
@@ -88,7 +126,14 @@ class _HomeState extends State<Home> {
                         Positioned(
                             left: MediaQuery.of(context).size.width*0.5+15,
                             bottom:20,
-                            child: Image.asset('assets/img/notification.png', width:18, height: 18,))
+                            child: InkWell(
+                              onTap: (){
+                                setState(() {
+                                  level_msg = true;
+                                });
+                              },
+                              child: Image.asset('assets/img/notification.png', width:18, height: 18,)),
+                            )
                       ],
                     ),
                     Padding(

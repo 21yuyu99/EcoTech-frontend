@@ -28,7 +28,7 @@ class _ResultPageState extends State<ResultPage> {
         ),
         width:90,
         height: 45,
-        margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height*0.73),
+        margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height*0.76),
         child: FloatingActionButton(
             elevation: 0,
             shape: RoundedRectangleBorder(
@@ -46,65 +46,70 @@ class _ResultPageState extends State<ResultPage> {
       body: SingleChildScrollView(
         child: Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top:40,bottom:15),
+            height: MediaQuery.of(context).size.height,
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left:20,bottom:18),
-                        child: Text("내가 절약한 금액",
-                          style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                              padding: EdgeInsets.only(left:25,right:50,top: 0),
-                              child : Image.asset('assets/img/record/piggy_bank.png',width: 100,)
-                          ),
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                  SizedBox(width: 50,),
-                                  Text("5,268.2원",style: TextStyle(fontFamily: "gaegu",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),),
-                                ],
-                              ),
-                              SizedBox(height: 15,),
-                              Row(
-                                children: [
-                                  Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                  SizedBox(width: 50,),
-                                  Text("10,536원",style: TextStyle(fontFamily: "gaegu",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),),
-                                ],
-                              ),
-                              SizedBox(height: 15,),
-                              Row(
-                                children: [
-                                  Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                  SizedBox(width: 50,),
-                                  Text("168,582원",style: TextStyle(fontFamily: "gaegu",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),),
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 20,),
                   Container(
+                    height: MediaQuery.of(context).size.height*0.3,
+                    padding: EdgeInsets.only(bottom: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left:20,bottom:30),
+                          child: Text("내가 절약한 금액",
+                            style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.only(left:25,right:50,top: 0),
+                                child : Image.asset('assets/img/record/piggy_bank.png',width: 100,)
+                            ),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                    SizedBox(width: 50,),
+                                    Text("5,268.2원",style: TextStyle(fontFamily: "gaegu",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),),
+                                  ],
+                                ),
+                                SizedBox(height: 15,),
+                                Row(
+                                  children: [
+                                    Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                    SizedBox(width: 50,),
+                                    Text("10,536원",style: TextStyle(fontFamily: "gaegu",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),),
+                                  ],
+                                ),
+                                SizedBox(height: 15,),
+                                Row(
+                                  children: [
+                                    Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                    SizedBox(width: 50,),
+                                    Text("168,582원",style: TextStyle(fontFamily: "gaegu",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.2,
+                    margin: EdgeInsets.only(top: 20,bottom: 20),
                     padding: EdgeInsets.only(bottom:15,top:10),
                     decoration: BoxDecoration(
                       color : Colors.white,

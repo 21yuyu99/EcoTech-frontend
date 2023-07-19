@@ -166,55 +166,59 @@ class _CheckPageState extends State<CheckPage> {
                 ],
               ),
               ).toList(),
-              Text("에어컨을 몇도로 설정하고 생활하셨나요?",
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-              SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 18,vertical: 8),
-                    decoration: BoxDecoration(
-                        border: Border.all(color:Colors.black,width: 2.0),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(8.0),
-                        )
+              Container(
+                child: Column(
+                  children: [Text("에어컨을 몇도로 설정하고 생활하셨나요?",
+                    style: TextStyle(
+                      fontSize: 24,
                     ),
-                    child: Text(degree.toString(),style:TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                   ),
-                  SizedBox(width: 15,),
-                  Text(
-                    "℃",style: TextStyle(fontSize: 18),
-                  ),
-                  SizedBox(width: 10,),
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: (){
-                          setState(() {
-                            degree++;
-                          });
-                        },
-                        padding: EdgeInsets.all(0),
-                        iconSize: 35,
-                        icon: Image.asset('assets/img/record/up_arrow.png'),
-                      ),
-                      IconButton(
-                          onPressed: (){
-                            setState(() {
-                              degree--;
-                            });
-                          },
-                          iconSize: 30,
-                          icon: Image.asset('assets/img/record/down_arrow.png'),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 18,vertical: 8),
+                          decoration: BoxDecoration(
+                              border: Border.all(color:Colors.black,width: 2.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8.0),
+                              )
+                          ),
+                          child: Text(degree.toString(),style:TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                        ),
+                        SizedBox(width: 15,),
+                        Text(
+                          "℃",style: TextStyle(fontSize: 18),
+                        ),
+                        SizedBox(width: 10,),
+                        Column(
+                          children: [
+                            IconButton(
+                              onPressed: (){
+                                setState(() {
+                                  degree++;
+                                });
+                              },
+                              padding: EdgeInsets.all(0),
+                              iconSize: 35,
+                              icon: Image.asset('assets/img/record/up_arrow.png'),
+                            ),
+                            IconButton(
+                              onPressed: (){
+                                setState(() {
+                                  degree--;
+                                });
+                              },
+                              iconSize: 30,
+                              icon: Image.asset('assets/img/record/down_arrow.png'),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),],
+                ),
+              )
             ],
           ),
         ),

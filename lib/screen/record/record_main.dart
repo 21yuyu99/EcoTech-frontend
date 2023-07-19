@@ -56,7 +56,7 @@ class _RecordMainState extends State<RecordMain> {
                     children: [
                       Text("오늘 하루 체크"),
                       SizedBox(width: 15,),
-                      Image.asset('assets/img/record/circle_check.png',width: 40,),
+                      Image.asset('assets/img/record/circle_check.png',width: 30,),
                     ],
                   )
               ),
