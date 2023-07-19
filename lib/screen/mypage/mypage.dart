@@ -12,28 +12,38 @@ class MyPage extends StatefulWidget {
 
   @override
   State<MyPage> createState() => _MyPageState();
+
 }
 
-  void nick_name() async {
-      try {
-        final FirebaseAuth auth = FirebaseAuth.instance;
-        final google.User? user = auth.currentUser;
-        final uid = user?.uid;
-        print(uid);
-      } catch(error) {
-          try{
-            kakao.User user = await kakao.UserApi.instance.me();
-            print('사용자 정보 요청 성공'
-                '\n회원번호: ${user.id}'
-                '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
-            );
-          } catch (error) {
-             print('사용자 정보 요청 실패 $error');
-        }
-    }
-}
 
 class _MyPageState extends State<MyPage> {
+  String? nickname;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNickname();
+  }
+
+  void fetchNickname() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final google.User? user = auth.currentUser;
+
+    if (user != null) {
+      setState(() {
+        nickname = user.displayName;
+      });
+    } else {
+      try {
+        final kakao.User kakaoUser = await kakao.UserApi.instance.me();
+        setState(() {
+          nickname = kakaoUser.kakaoAccount?.profile?.nickname;
+        });
+      } catch (e) {
+        print('사용자 정보 요청 실패: $e');
+      }
+    }
+  }
   void logout() async {
     if(FirebaseAuth.instance.currentUser!=null){
       try{
@@ -75,7 +85,8 @@ class _MyPageState extends State<MyPage> {
         children: [
           Row(
             children: [
-              Text("", style: TextStyle(fontSize: 40, color: Colors.black, fontWeight: FontWeight.w500)),
+              const SizedBox(width: 25,),
+              Text("${nickname}님"?? "loading", style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.w500)),
               const SizedBox(width: 15,),
               Column(
                 children: [
@@ -85,17 +96,17 @@ class _MyPageState extends State<MyPage> {
                     },
                     child: const Text(
                       "로그아웃",
-                      style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w900),
+                      style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w400),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.withOpacity(0.5),
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      backgroundColor: Color(0xffFFF1A7),
+                      padding: EdgeInsets.all(0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(height: 50,),
                 ],
               ),
             ],
@@ -104,7 +115,7 @@ class _MyPageState extends State<MyPage> {
             children: [
               Text("LV.1", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),),
               const SizedBox(height: 30,),
-              Image.asset('assets/img/lv1Icon.png',),
+              Image.asset('assets/img/lv1Icon.png', height: 230, width: 230,),
             ],
           ),
           Material(
