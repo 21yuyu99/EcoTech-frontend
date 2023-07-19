@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/screen/mypage/setting.dart';
 import 'package:frontend/screen/mainPage.dart';
-import 'package:frontend/screen/mypage.dart';
+import 'package:frontend/screen/mypage/mypage.dart';
 import 'package:frontend/screen/record/record_main.dart';
 import 'package:frontend/utils/colors.dart';
 
