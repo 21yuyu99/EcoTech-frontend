@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart' as google;
 import 'package:flutter/material.dart';
-import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mypage/mypage.dart';
 import '../../utils/colors.dart';
 import '../../widget/bottom_bar.dart';
@@ -16,15 +16,35 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   int degree = 26;
-  final _ProvinceList = ['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '경기도', "강원도",
+  final _ProvinceList = ['시/도','서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '경기도', "강원도",
   "충청북도","충청남도","전라북도","전라남도","경상북도","경상남도","제주특별자치도","세종특별자치시"];
-  var _SelectedProvinceValue = '서울특별시';
-  final _ProvinceCodeList = ['11', '21', '22', '23', '24', '25', '26', '31', '32', '33', '34', '35', '36', '37', '38', '39', '41'];
-  final _CityList = ['서울시', '인천시', '부산시', '대구시', '대전시', '광주시', '...'];
-  var _SelectedCityValue = '서울시';
+  var _SelectedProvinceValue = '시/도';
+  final _ProvinceCodeList = ['0','11', '21', '22', '23', '24', '25', '26', '31', '32', '33', '34', '35', '36', '37', '38', '39', '41'];
+  List _CityList = ['시/군/구'];
+  var _SelectedCityValue = '시/군/구';
   final _CommutingHabitList = ['자차 이용', '대중교통 이용', '도보/자전거 이용','재택근무'];
   var _SelectedCommutingHabitValue = '자차 이용';
-
+  // void save_post() async {
+  //     final google.FirebaseAuth auth = google.FirebaseAuth.instance;
+  //     final google.User? user = auth.currentUser;
+  //     try{
+  //
+  //     }
+  //     if (user != null) {
+  //       setState(() {
+  //         nickname = user.displayName;
+  //       });
+  //     } else {
+  //       try {
+  //         final kakao.User kakaoUser = await kakao.UserApi.instance.me();
+  //         setState(() {
+  //           nickname = kakaoUser.kakaoAccount?.profile?.nickname;
+  //         });
+  //       } catch (e) {
+  //         print('사용자 정보 요청 실패: $e');
+  //       }
+  //     }
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +110,7 @@ class _SettingsState extends State<Settings> {
                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                      children: [
                        Container(
-                         padding: EdgeInsets.symmetric(vertical: 0,horizontal: 35),
+                         padding: EdgeInsets.symmetric(vertical: 0,horizontal: 15),
                          alignment: Alignment.center,
                          decoration: BoxDecoration(
                            borderRadius: BorderRadius.circular(10),
@@ -114,13 +134,29 @@ class _SettingsState extends State<Settings> {
                                _SelectedProvinceValue = value!;
                              });
                               int index = _ProvinceList.indexOf(_SelectedProvinceValue);
-                              var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/region');
-                              var response = await http.post(url,body:{
-                                "sido" : _SelectedProvinceValue,
-                                "code" : _ProvinceCodeList[index],
-                              });
-                              print(response.statusCode);
-                              print(response.body);
+                              if(index!=0){
+                                var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/region');
+                                var response = await http.post(url,body:{
+                                  "sido" : _SelectedProvinceValue,
+                                  "code" : _ProvinceCodeList[index],
+                                });
+                                print(response.statusCode);
+                                final Map parsed = json.decode(response.body);
+                                List<dynamic> city = ['시/군/구'];
+                                city.addAll(parsed["city"]);
+                                setState(() {
+                                  _SelectedCityValue = "시/군/구";
+                                  _CityList = city;
+                                });
+                                // _SelectedCityValue
+                              }
+                              else{
+                                setState(() {
+                                  _SelectedCityValue = "시/군/구";
+                                  _CityList = ["시/군/구"];
+                                });
+                              }
+
                            },
                          ),
                        ),
@@ -146,7 +182,7 @@ class _SettingsState extends State<Settings> {
                            ).toList(),
                            onChanged: (value) {
                              setState(() {
-                               _SelectedCityValue = value!;
+                               _SelectedCityValue = value as String;
                              });
                            },
                          ),

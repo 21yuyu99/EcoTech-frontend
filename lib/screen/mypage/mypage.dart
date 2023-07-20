@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mypage/setting.dart';
+import 'package:frontend/utils/which_login.dart';
 import 'package:frontend/widget/bottom_bar.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
 
 class MyPage extends StatefulWidget {
@@ -26,54 +26,65 @@ class _MyPageState extends State<MyPage> {
   }
 
   void fetchNickname() async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final google.User? user = auth.currentUser;
-
-    if (user != null) {
-      setState(() {
-        nickname = user.displayName;
-      });
-    } else {
+    String which = await which_login();
+    if(which == "google") {
+      try {
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final google.User? user = auth.currentUser;
+          setState(() {
+            nickname = user?.displayName;
+        });
+      }
+      catch (error) {
+        print("구글 닉네임 불러오기 오류");
+      }
+    }
+    else if(which == "kakao"){
       try {
         final kakao.User kakaoUser = await kakao.UserApi.instance.me();
         setState(() {
           nickname = kakaoUser.kakaoAccount?.profile?.nickname;
         });
       } catch (e) {
-        print('사용자 정보 요청 실패: $e');
-      }
-    }
-  }
-  void logout() async {
-    if(FirebaseAuth.instance.currentUser!=null){
-      try{
-        print("구글 로그아웃");
-        await FirebaseAuth.instance.signOut();
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const LoginPage()),
-            (route) => false,
-        );
-      } catch(error){
-        print("구글 로그아웃 실패");
+        print('카카오 사용자 정보 요청 실패: $e');
       }
     }
     else{
-      try{
-        kakao.User user = await kakao.UserApi.instance.me();
-        user.id;
-        await kakao.UserApi.instance.logout();
-        print('카카오 로그아웃 성공, SDK에서 토큰 삭제');
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const LoginPage()),
-            (route) => false,
-        );
-      } catch (error) {
-        print('사용자 정보 요청 실패 $error');
-      }
+      print("닉네임 불러오기 에러");
+    }
+  }
+  void logout() async {
+    String which = await which_login();
+    if(which == "google"){
+        try{
+          print("구글 로그아웃");
+          await FirebaseAuth.instance.signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const LoginPage()),
+              (route) => false,
+          );
+        } catch(error){
+          print("구글 로그아웃 실패");
+        }
+    }
+    else if(which == "kakao"){
+        try{
+          await kakao.UserApi.instance.logout();
+          print('카카오 로그아웃 성공, SDK에서 토큰 삭제');
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const LoginPage()),
+              (route) => false,
+          );
+        } catch (error) {
+          print('사용자 정보 요청 실패 $error');
+        }
+    }
+    else{
+      print("로그아웃 실패");
     }
   }
   @override
