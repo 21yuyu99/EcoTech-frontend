@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart' as google;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
 import 'package:flutter/material.dart';
 import 'package:frontend/screen/mypage/mypage.dart';
 import '../../utils/colors.dart';
+import '../../utils/which_login.dart';
 import '../../widget/bottom_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -18,33 +21,53 @@ class _SettingsState extends State<Settings> {
   int degree = 26;
   final _ProvinceList = ['시/도','서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '경기도', "강원도",
   "충청북도","충청남도","전라북도","전라남도","경상북도","경상남도","제주특별자치도","세종특별자치시"];
-  var _SelectedProvinceValue = '시/도';
+  var _SelectedProvinceValue= '시/도';
   final _ProvinceCodeList = ['0','11', '21', '22', '23', '24', '25', '26', '31', '32', '33', '34', '35', '36', '37', '38', '39', '41'];
   List _CityList = ['시/군/구'];
   var _SelectedCityValue = '시/군/구';
   final _CommutingHabitList = ['자차 이용', '대중교통 이용', '도보/자전거 이용','재택근무'];
   var _SelectedCommutingHabitValue = '자차 이용';
-  // void save_post() async {
-  //     final google.FirebaseAuth auth = google.FirebaseAuth.instance;
-  //     final google.User? user = auth.currentUser;
-  //     try{
-  //
-  //     }
-  //     if (user != null) {
-  //       setState(() {
-  //         nickname = user.displayName;
-  //       });
-  //     } else {
-  //       try {
-  //         final kakao.User kakaoUser = await kakao.UserApi.instance.me();
-  //         setState(() {
-  //           nickname = kakaoUser.kakaoAccount?.profile?.nickname;
-  //         });
-  //       } catch (e) {
-  //         print('사용자 정보 요청 실패: $e');
-  //       }
-  //     }
-  // }
+
+
+  Future<int> save_post() async {
+    String which = await which_login();
+    late final user_id,nickname;
+    if(which == "google") {
+      try {
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final google.User? user = auth.currentUser;
+        user_id = user?.uid;
+        nickname = user?.displayName;
+      }
+      catch (error) {
+        print("구글 정보 보내기 오류");
+      }
+    }
+    else if(which == "kakao"){
+      try {
+        final kakao.User user = await kakao.UserApi.instance.me();
+        user_id = user.id;
+        nickname = user.properties?['nickname'];
+      } catch (e) {
+        print('카카오 사용자 정보 보내기 실패: $e');
+      }
+    }
+    else{
+      print("저장 오류");
+      return 404;
+    }
+    var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/info');
+    var response = await http.post(url,body:{
+      "user_id" : user_id.toString(),
+      "metro" : _SelectedProvinceValue,
+      "city" : _SelectedCityValue,
+      "air_habit" : degree.toString(),
+      "car_habit" : _SelectedCommutingHabitValue == "자차 이용"?"1":"0",
+      "nickname" : nickname,
+    });
+    return response.statusCode;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,21 +90,38 @@ class _SettingsState extends State<Settings> {
         shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(5.0))),
         onPressed: () async {
-          var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/info');
-          var response = await http.post(url,body:{
-              // "user_id" =
-          });
-          print(response.statusCode);
-          print(response.body);
-          Fluttertoast.showToast(
-              msg: "저장되었습니다",
+          if(_SelectedProvinceValue !="시/도" && _SelectedCityValue!="시/군/구"){
+            final post = await save_post();
+            if(post == 200){
+              Fluttertoast.showToast(
+                msg: "저장되었습니다",
+                gravity: ToastGravity.BOTTOM,
+                fontSize: 16.0,
+                textColor: Colors.black,
+                backgroundColor: Colors.white,
+              );Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyPage()));
+            }
+            else{
+              Fluttertoast.showToast(
+                msg: "저장 실패",
+                gravity: ToastGravity.BOTTOM,
+                fontSize: 16.0,
+                textColor: Colors.black,
+                backgroundColor: Colors.white,
+              );
+            }
+          }
+          else{
+            Fluttertoast.showToast(
+              msg: "모든 항목을 채워주세요",
               gravity: ToastGravity.BOTTOM,
               fontSize: 16.0,
               textColor: Colors.black,
               backgroundColor: Colors.white,
-          );Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const MyPage()));
+            );
+          }
           },
         backgroundColor: AppColor.accentColor,
         child: Text("저장",style: TextStyle(fontSize: 19,fontWeight: FontWeight.w500),),
