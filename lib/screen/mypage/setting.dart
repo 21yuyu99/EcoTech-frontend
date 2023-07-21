@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart' as google;
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
+import 'package:frontend/utils/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screen/mypage/mypage.dart';
 import '../../utils/colors.dart';
-import '../../utils/which_login.dart';
 import '../../widget/bottom_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -30,40 +27,15 @@ class _SettingsState extends State<Settings> {
 
 
   Future<int> save_post() async {
-    String which = await which_login();
-    late final user_id,nickname;
-    if(which == "google") {
-      try {
-        final FirebaseAuth auth = FirebaseAuth.instance;
-        final google.User? user = auth.currentUser;
-        user_id = user?.uid;
-        nickname = user?.displayName;
-      }
-      catch (error) {
-        print("구글 정보 보내기 오류");
-      }
-    }
-    else if(which == "kakao"){
-      try {
-        final kakao.User user = await kakao.UserApi.instance.me();
-        user_id = user.id;
-        nickname = user.properties?['nickname'];
-      } catch (e) {
-        print('카카오 사용자 정보 보내기 실패: $e');
-      }
-    }
-    else{
-      print("저장 오류");
-      return 404;
-    }
+    final user_info = await get_user(true,true);
     var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/info');
     var response = await http.post(url,body:{
-      "user_id" : user_id.toString(),
+      "user_id" : user_info[0],
       "metro" : _SelectedProvinceValue,
       "city" : _SelectedCityValue,
       "air_habit" : degree.toString(),
       "car_habit" : _SelectedCommutingHabitValue == "자차 이용"?"1":"0",
-      "nickname" : nickname,
+      "nickname" : user_info[1],
     });
     return response.statusCode;
   }
