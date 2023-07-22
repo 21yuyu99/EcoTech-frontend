@@ -19,6 +19,8 @@ String? money;
 String? electronic;
 String? co2;
 String? level;
+bool info_loading = true;
+bool level_loading = true;
 Future post_info() async {
   final user = await get_user(true,false);
   var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/show/showaccum');
@@ -36,6 +38,7 @@ Future post_info() async {
       double.parse(temp.toStringAsFixed(2)) - temp.ceil() == 0?electronic = temp.ceil().toString():electronic = double.parse(temp.toStringAsFixed(2)).toString();
       temp = parsed["accum"]["co2"];
       double.parse(temp.toStringAsFixed(2)) - temp.ceil() == 0?co2 = temp.ceil().toString():co2 = double.parse(temp.toStringAsFixed(2)).toString();
+      info_loading = false;
     });
     return parsed;
 
@@ -59,6 +62,7 @@ void post_level() async{
   if(parsed["status"]==200){
     setState((){
       level = parsed["level"].toString();
+      level_loading = false;
     });
   }
   else{
@@ -119,7 +123,10 @@ void initState() {
           ),
         ):null,
         body:SingleChildScrollView(
-          child:  Container(
+          child:  info_loading==true||level_loading==true?Center(
+            child: CircularProgressIndicator(),
+          ):
+          Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.only(top: 40),
             child: Column(
