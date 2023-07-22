@@ -76,6 +76,7 @@ class _MyPageState extends State<MyPage> {
         final kakao.User kakaoUser = await kakao.UserApi.instance.me();
         setState(() {
           nickname = kakaoUser.kakaoAccount?.profile?.nickname;
+          info_loading = false;
         });
       } catch (e) {
         print('카카오 사용자 정보 요청 실패: $e');
