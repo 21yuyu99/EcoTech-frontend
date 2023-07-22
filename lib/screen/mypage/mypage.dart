@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart' as google;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mypage/setting.dart';
 import 'package:frontend/utils/which_login.dart';
 import 'package:frontend/widget/bottom_bar.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
+import 'package:http/http.dart' as http;
+
+import '../../utils/user_info.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -18,13 +24,37 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   String? nickname;
-
+  String? level;
+  bool info_loading = true;
+  bool level_loading = true;
   @override
   void initState() {
     super.initState();
     fetchNickname();
+    post_level();
   }
-
+  void post_level() async{
+    final user = await get_user(true,false);
+    var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/mypage');
+    var response = await http.post(url,body:{
+      "user_id" : user[0]
+    });
+    final Map parsed = json.decode(response.body);
+    if(parsed["status"]==200){
+      setState((){
+        level = parsed["level"].toString();
+        level_loading = false;
+      });
+    }
+    else{
+      Fluttertoast.showToast(
+          msg: "데이터 불러오기 오류",
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 16.0,
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
+    }
+  }
   void fetchNickname() async {
     String which = await which_login();
     if(which == "google") {
@@ -33,6 +63,7 @@ class _MyPageState extends State<MyPage> {
         final google.User? user = auth.currentUser;
           setState(() {
             nickname = user?.displayName;
+            info_loading = false;
         });
       }
       catch (error) {
@@ -91,7 +122,9 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomBar(selectedIdx: 3,),
-      body: Column(
+      body: info_loading&&level_loading?Center(
+        child: CircularProgressIndicator(),
+      ):Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Row(
@@ -126,7 +159,7 @@ class _MyPageState extends State<MyPage> {
             children: [
               Text("LV.1", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),),
               const SizedBox(height: 15,),
-              Image.asset('assets/img/lv1Icon.png', height: 200, width: 200,),
+              Image.asset('assets/img/level/circle_level_${level}.png', height: 200, width: 200,),
             ],
           ),
           Material(

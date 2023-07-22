@@ -225,7 +225,7 @@ void initState() {
                       Padding(
                           padding : EdgeInsets.only(top:10,left : MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                           child: Container(
-                            child: Image.asset('assets/img/sprout_and_barren_land.png',
+                            child: Image.asset('assets/img/level/level_${level}.png',
                               width: MediaQuery.of(context).size.width,
                             ),
                           )
