@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/screen/record/check_page.dart';
 import 'package:frontend/screen/record/result.dart';
-import 'package:frontend/utils/colors.dart';
 import 'package:frontend/widget/bottom_bar.dart';
+import '../../utils/user_info.dart';
+import 'package:http/http.dart' as http;
 
 class RecordMain extends StatefulWidget {
   const RecordMain({super.key});
@@ -12,6 +15,14 @@ class RecordMain extends StatefulWidget {
 }
 
 class _RecordMainState extends State<RecordMain> {
+  Future<String> alreadySaved() async{
+    final user = await get_user(true,false);
+    var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/check');
+    var response = await http.post(url,body:{
+        "user_id" : user[0]
+    });
+    return response.body;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,11 +56,36 @@ class _RecordMainState extends State<RecordMain> {
                       backgroundColor: Color(0xffF1FFEE),
                       foregroundColor: Colors.black
                   ),
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const CheckPage()),
-                    );
+                  onPressed: () async {
+                    final user_info = await alreadySaved();
+                    final Map parsed = json.decode(user_info);
+                    if(parsed['status'] == 200){
+                      print(parsed);
+                      if(parsed['save_check'] == 1){
+                        Fluttertoast.showToast(
+                          msg: "오늘 하루 체크를 이미 했어요!",
+                          gravity: ToastGravity.BOTTOM,
+                          fontSize: 16.0,
+                          textColor: Colors.black,
+                          backgroundColor: Colors.white,
+                        );
+                      }
+                      else{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CheckPage(carhabit: parsed['car_habit'],)),
+                        );
+                      }
+                    }
+                    else{
+                      Fluttertoast.showToast(
+                        msg: "서버 오류",
+                        gravity: ToastGravity.BOTTOM,
+                        fontSize: 16.0,
+                        textColor: Colors.black,
+                        backgroundColor: Colors.white,
+                      );
+                    }
                   },
                   child:Row(
                     mainAxisAlignment: MainAxisAlignment.center,
