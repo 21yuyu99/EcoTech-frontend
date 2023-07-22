@@ -8,8 +8,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class Settings extends StatefulWidget {
-  const Settings({super.key});
-
+  Settings({super.key,
+    required this.first,
+  });
+  bool first;
   @override
   State<Settings> createState() => _SettingsState();
 }
@@ -42,6 +44,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       bottomNavigationBar: const BottomBar(selectedIdx: 3,),
       floatingActionButton: Container(
@@ -100,219 +103,266 @@ class _SettingsState extends State<Settings> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-             Container(
-               padding: EdgeInsets.only(top: 50),
-               height: MediaQuery.of(context).size.height*0.3,
-               child:  Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
+        child: Stack(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Container(
-                      padding: EdgeInsets.only(left: 30),
-                    child:  Text("거주 지역", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
-                  ),
-                   SizedBox(height:50,),
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                     children: [
-                       Container(
-                         padding: EdgeInsets.symmetric(vertical: 0,horizontal: 15),
-                         alignment: Alignment.center,
-                         decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(10),
-                           color: Color(0xffCDD6CC).withOpacity(.30),
-                         ),
-                         child: DropdownButton(
-                           iconSize: 0,
-                           value: _SelectedProvinceValue,
-                           underline: SizedBox.shrink(),
-                           alignment: Alignment.center,
-                           items: _ProvinceList.map(
-                                 (value) {
-                               return DropdownMenuItem(
-                                 value: value,
-                                 child: Center(child: Text(value, style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),)),
-                               );
-                             },
-                           ).toList(),
-                           onChanged: (value) async {
-                             setState(()  {
-                               _SelectedProvinceValue = value!;
-                             });
-                              int index = _ProvinceList.indexOf(_SelectedProvinceValue);
-                              if(index!=0){
-                                var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/region');
-                                var response = await http.post(url,body:{
-                                  "sido" : _SelectedProvinceValue,
-                                  "code" : _ProvinceCodeList[index],
-                                });
-                                print(response.statusCode);
-                                final Map parsed = json.decode(response.body);
-                                List<dynamic> city = ['시/군/구'];
-                                city.addAll(parsed["city"]);
-                                setState(() {
-                                  _SelectedCityValue = "시/군/구";
-                                  _CityList = city;
-                                });
-                                // _SelectedCityValue
-                              }
-                              else{
-                                setState(() {
-                                  _SelectedCityValue = "시/군/구";
-                                  _CityList = ["시/군/구"];
-                                });
-                              }
-
-                           },
-                         ),
-                       ),
-                       Container(
-                         padding: EdgeInsets.symmetric(vertical: 0,horizontal: 35),
-                         alignment: Alignment.center,
-                         decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(10),
-                           color: Color(0xffCDD6CC).withOpacity(.30),
-                         ),
-                         child: DropdownButton(
-                           iconSize: 0,
-                           alignment: Alignment.center,
-                           value: _SelectedCityValue,
-                           underline: SizedBox.shrink(),
-                           items: _CityList.map(
-                                 (value) {
-                               return DropdownMenuItem(
-                                 value: value,
-                                 child: Text(value, style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                               );
-                             },
-                           ).toList(),
-                           onChanged: (value) {
-                             setState(() {
-                               _SelectedCityValue = value as String;
-                             });
-                           },
-                         ),
-                       ),
-                     ],
-                   ),
-                 ],
-               ),
-             ),
-              Container(
-                height: MediaQuery.of(context).size.height*0.3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text("에어컨 평소 설정 온도", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
-                    ),
-                    SizedBox(height:30,),
-                    Row(
+                    padding: EdgeInsets.only(top: 50),
+                    height: MediaQuery.of(context).size.height*0.3,
+                    child:  Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 25,vertical: 13),
-                          decoration: BoxDecoration(
-                            //border: Border.all(color:Colors.black,width: 2.0),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8.0),
-                            ),
-                            color: Color(0xffCDD6CC).withOpacity(.30),
-                          ),
-                          child: Text(degree.toString(),style:TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                          padding: EdgeInsets.only(left: 30),
+                          child:  Text("거주 지역", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
                         ),
-                        SizedBox(width: 10,),
-                        Text(
-                          "℃",style: TextStyle(fontSize: 18,fontFamily: 'gaegu'),
-                        ),
-                        SizedBox(width: 10,),
-                        Column(
+                        SizedBox(height:50,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            IconButton(
-                              onPressed: (){
-                                setState(() {
-                                  degree++;
-                                });
-                              },
-                              padding: EdgeInsets.all(0),
-                              iconSize: 35,
-                              icon: Image.asset('assets/img/record/up_arrow.png'),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 0,horizontal: 15),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xffCDD6CC).withOpacity(.30),
+                              ),
+                              child: DropdownButton(
+                                iconSize: 0,
+                                value: _SelectedProvinceValue,
+                                underline: SizedBox.shrink(),
+                                alignment: Alignment.center,
+                                items: _ProvinceList.map(
+                                      (value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Center(child: Text(value, style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),)),
+                                    );
+                                  },
+                                ).toList(),
+                                onChanged: (value) async {
+                                  setState(()  {
+                                    _SelectedProvinceValue = value!;
+                                  });
+                                  int index = _ProvinceList.indexOf(_SelectedProvinceValue);
+                                  if(index!=0){
+                                    var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/region');
+                                    var response = await http.post(url,body:{
+                                      "sido" : _SelectedProvinceValue,
+                                      "code" : _ProvinceCodeList[index],
+                                    });
+                                    print(response.statusCode);
+                                    final Map parsed = json.decode(response.body);
+                                    List<dynamic> city = ['시/군/구'];
+                                    city.addAll(parsed["city"]);
+                                    setState(() {
+                                      _SelectedCityValue = "시/군/구";
+                                      _CityList = city;
+                                    });
+                                    // _SelectedCityValue
+                                  }
+                                  else{
+                                    setState(() {
+                                      _SelectedCityValue = "시/군/구";
+                                      _CityList = ["시/군/구"];
+                                    });
+                                  }
+
+                                },
+                              ),
                             ),
-                            IconButton(
-                              onPressed: (){
-                                setState(() {
-                                  degree--;
-                                });
-                              },
-                              iconSize: 30,
-                              icon: Image.asset('assets/img/record/down_arrow.png'),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 0,horizontal: 35),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xffCDD6CC).withOpacity(.30),
+                              ),
+                              child: DropdownButton(
+                                iconSize: 0,
+                                alignment: Alignment.center,
+                                value: _SelectedCityValue,
+                                underline: SizedBox.shrink(),
+                                items: _CityList.map(
+                                      (value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value, style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                    );
+                                  },
+                                ).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _SelectedCityValue = value as String;
+                                  });
+                                },
+                              ),
                             ),
                           ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height*0.3,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text("교통습관", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
-                    ),
-                    SizedBox(height:40,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("출근할 때 주로    ", style: TextStyle(fontSize: 20,
-                            fontFamily: 'gaegu',fontWeight:FontWeight.w600),),
-                        Container(
-                          width: 150,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xffCDD6CC).withOpacity(.30),
-                          ),
-                          child: DropdownButton(
-                            iconSize: 0,
-                            value: _SelectedCommutingHabitValue,
-                            alignment: Alignment.center,
-                            underline: SizedBox.shrink(),
-                            items: _CommutingHabitList.map(
-                                  (value) {
-                                return DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value, style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,),),
-                                );
-                              },
-                            ).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _SelectedCommutingHabitValue = value!;
-                              });
-                            },
-                          ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Text("에어컨 평소 설정 온도", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
+                        ),
+                        SizedBox(height:30,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 25,vertical: 13),
+                              decoration: BoxDecoration(
+                                //border: Border.all(color:Colors.black,width: 2.0),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
+                                ),
+                                color: Color(0xffCDD6CC).withOpacity(.30),
+                              ),
+                              child: Text(degree.toString(),style:TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                            ),
+                            SizedBox(width: 10,),
+                            Text(
+                              "℃",style: TextStyle(fontSize: 18,fontFamily: 'gaegu'),
+                            ),
+                            SizedBox(width: 10,),
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      degree++;
+                                    });
+                                  },
+                                  padding: EdgeInsets.all(0),
+                                  iconSize: 35,
+                                  icon: Image.asset('assets/img/record/up_arrow.png'),
+                                ),
+                                IconButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      degree--;
+                                    });
+                                  },
+                                  iconSize: 30,
+                                  icon: Image.asset('assets/img/record/down_arrow.png'),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Text("교통습관", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
+                        ),
+                        SizedBox(height:40,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("출근할 때 주로    ", style: TextStyle(fontSize: 20,
+                                fontFamily: 'gaegu',fontWeight:FontWeight.w600),),
+                            Container(
+                              width: 150,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xffCDD6CC).withOpacity(.30),
+                              ),
+                              child: DropdownButton(
+                                iconSize: 0,
+                                value: _SelectedCommutingHabitValue,
+                                alignment: Alignment.center,
+                                underline: SizedBox.shrink(),
+                                items: _CommutingHabitList.map(
+                                      (value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value, style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,),),
+                                    );
+                                  },
+                                ).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _SelectedCommutingHabitValue = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Visibility(
+              visible: widget.first,
+                child: Positioned(
+                bottom: MediaQuery.of(context).size.height*0.35,
+                child: Container(
+                    width: MediaQuery.of(context).size.width*0.94,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: Colors.white,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: Color.fromRGBO(44, 189, 15, 0.26),
+                          blurRadius:5.0,
+                          offset: Offset(0,5),
+                        ),
+                      ],
+                    ),
+                    margin:EdgeInsets.only(left:MediaQuery.of(context).size.width*0.03,right:MediaQuery.of(context).size.width*0.03),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 20,),
+                          Text("환영합니다!",style: TextStyle(fontSize: 25,),),
+                          SizedBox(height: 20,),
+                          Text("원활한 서비스 이용을 위해",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                          SizedBox(height: 10,),
+                          Text("기본 설정을 먼저 해주세요:)",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                          SizedBox(height: 20,),
+                          Text("예상 절약 금액, 에니저 절감량을 계산하는 데 사용됩니다.",style: TextStyle(fontSize: 16,height: 1.5),),
+                          SizedBox(height: 20,),
+                          ElevatedButton(onPressed: (){
+                            setState(() {
+                              widget.first = false;
+                            });
+                          }, child: Text("확인했어요",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+                            style: ElevatedButton.styleFrom(padding:EdgeInsets.symmetric(vertical: 15,horizontal: 15),
+                                backgroundColor: AppColor.primaryColor),),
+                        ],
+                      ),
+                    )
+                )))
+          ],
+        )
       ),
     );
   }

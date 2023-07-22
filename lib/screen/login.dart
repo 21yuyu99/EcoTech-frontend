@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:frontend/utils/user_info.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'mainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:http/http.dart' as http;
+import 'mypage/setting.dart';
 
 String? DisplayName = '';
 
@@ -16,6 +21,26 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
+  void postInfo() async {
+    final user =  await get_user(true, false);
+    var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/usercheck');
+    var response = await http.post(url,body:{
+      "user_id" : user[0],
+    });
+    var data = json.decode(response.body);
+    if(data["user_id"]!=user[0]){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Settings(first: true,)),
+      );
+    }
+    else{
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Center(
                 child: Container(
-                  margin: EdgeInsets.only(top:50,left:MediaQuery.of(context).size.width * 0.04,
+                  margin: EdgeInsets.only(top:90,left:MediaQuery.of(context).size.width * 0.04,
                     right: MediaQuery.of(context).size.width * 0.04,
                     // top : MediaQuery.of(context).size.width * 0.5,
                   ),
@@ -48,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.white,
                   ),
                   width: MediaQuery.of(context).size.width,
-                  height: 250,
+                  height: 300,
                   child: Column(
                     children: [
                       SizedBox(height: 45,),
@@ -68,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                                   try {
                                   await UserApi.instance.loginWithKakaoTalk();
                                   print('카카오톡으로 로그인 성공');
+                                  postInfo();
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const Home()),
@@ -79,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                                   try {
                                   await UserApi.instance.loginWithKakaoAccount();
                                   print('카카오계정으로 로그인 성공');
+                                  postInfo();
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const Home()),
@@ -96,6 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                                   try {
                                   await UserApi.instance.loginWithKakaoAccount();
                                   print('카카오계정으로 로그인 성공');
+                                  postInfo();
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const Home()),
@@ -114,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                             },
                               child: Image.asset('assets/img/kakao_btn.png'),),
-                            SizedBox(height: 5,),
+                            SizedBox(height: 20,),
                             InkWell(onTap:() async {
                                 GoogleSignIn googleSignIn = GoogleSignIn();
                                 final googleAccount = await googleSignIn.signIn();
@@ -130,10 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                                     );
                                     try {
                                       await FirebaseAuth.instance.signInWithCredential(credential);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => Home())
-                                      );
+                                      postInfo();
                                     } on FirebaseAuthException catch (e) {
                                       print('error $e');
                                     } catch (e) {

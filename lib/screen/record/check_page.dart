@@ -61,52 +61,57 @@ class _CheckPageState extends State<CheckPage> {
               ],
             ),
             actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffFFF6C7),
-                      padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color:Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xffFFF6C7),
+                        padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                      ),
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("돌아가기",style: TextStyle(color: Colors.black,fontSize: 23),),
                     ),
-                    onPressed: (){
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("돌아가기",style: TextStyle(color: Colors.black,fontSize: 23),),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.accentColor,
-                      padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.accentColor,
+                        padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                      ),
+                      onPressed: () async {
+                        final post = await post_save();
+                        final Map parsed = json.decode(post);
+                        if(parsed['status']==200){
+                          print(parsed);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ResultPage()),
+                          );
+                        }
+                        else{
+                          Fluttertoast.showToast(
+                            msg: "저장 실패",
+                            gravity: ToastGravity.BOTTOM,
+                            fontSize: 16.0,
+                            textColor: Colors.black,
+                            backgroundColor: Colors.white,
+                          );
+                        }
+                      },
+                      child: Text(
+                        "저장",
+                        style: TextStyle(color: Colors.black,fontSize: 23,
+                        ),),
                     ),
-                    onPressed: () async {
-                      final post = await post_save();
-                      final Map parsed = json.decode(post);
-                      if(parsed['status']==200){
-                        print(parsed);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ResultPage()),
-                        );
-                      }
-                      else{
-                        Fluttertoast.showToast(
-                          msg: "저장 실패",
-                          gravity: ToastGravity.BOTTOM,
-                          fontSize: 16.0,
-                          textColor: Colors.black,
-                          backgroundColor: Colors.white,
-                        );
-                      }
-                    },
-                    child: Text(
-                      "저장",
-                      style: TextStyle(color: Colors.black,fontSize: 23,
-                      ),),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20,)
+                    SizedBox(height: 20,),
+                  ],
+                ),
+              )
             ]
         );
       },

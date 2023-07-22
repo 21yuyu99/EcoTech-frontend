@@ -125,8 +125,8 @@ class _MyPageState extends State<MyPage> {
           Column(
             children: [
               Text("LV.1", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),),
-              const SizedBox(height: 30,),
-              Image.asset('assets/img/lv1Icon.png', height: 230, width: 230,),
+              const SizedBox(height: 15,),
+              Image.asset('assets/img/lv1Icon.png', height: 200, width: 200,),
             ],
           ),
           Material(
@@ -136,10 +136,10 @@ class _MyPageState extends State<MyPage> {
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Settings()),
+                  MaterialPageRoute(builder: (context) => Settings(first: false,)),
                 );
               },
-              child: const Text("환경 습관 기본 설정", style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.w500),),
+              child: const Text("환경 습관 기본 설정", style: TextStyle(fontSize: 28, color: Colors.black, fontWeight: FontWeight.w500),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xffF3F3F3).withOpacity(1), // 버튼 색상을 회색으로 설정
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20), // 버튼 패딩을 설정하여 크기를 조절

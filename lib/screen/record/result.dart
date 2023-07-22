@@ -1,7 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/screen/record/by_item.dart';
 import 'package:frontend/utils/colors.dart';
 import 'package:frontend/widget/bottom_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import '../../utils/user_info.dart';
 
 class ResultPage extends StatefulWidget {
 
@@ -12,6 +17,53 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
+  var today;
+  var month;
+  var accum;
+  String? messages;
+  Future post_info() async {
+    final user = await get_user(true,false);
+    var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/show/showrecord');
+    var response = await http.post(url,body:{
+      "user_id" : user[0]
+    });
+    final Map parsed = json.decode(response.body);
+    if(parsed["status"] == 200){
+      today = parsed["record"]["today"];
+      month = parsed["record"]["month"];
+      accum = parsed["record"]["accum"];
+      messages = parsed["record"]["messages"].values.toList()[0];
+      setState(() {
+        var temp = today;
+        var f = NumberFormat('###,###,###,###');
+        double.parse(temp["money"].toStringAsFixed(2)) - temp["money"].ceil() == 0?today["money"] = f.format(temp["money"].ceil()):today["money"] = f.format(double.parse(temp["money"].toStringAsFixed(2)));
+        double.parse(temp["co2"].toStringAsFixed(2)) - temp["co2"].ceil() == 0?today["co2"] = temp["co2"].ceil().toString():today["co2"] = double.parse(temp["co2"].toStringAsFixed(2)).toString();
+        double.parse(temp["elec"].toStringAsFixed(2)) - temp["elec"].ceil() == 0?today["elec"] = temp["elec"].ceil().toString():today["elec"] = double.parse(temp["elec"].toStringAsFixed(2)).toString();
+        temp = month;
+        double.parse(temp["money"].toStringAsFixed(2)) - temp["money"].ceil() == 0?month["money"] = f.format(temp["money"].ceil()):month["money"] = f.format(double.parse(temp["money"].toStringAsFixed(2)));
+        double.parse(temp["co2"].toStringAsFixed(2)) - temp["co2"].ceil() == 0?month["co2"] = temp["co2"].ceil().toString():month["co2"] = double.parse(temp["co2"].toStringAsFixed(2)).toString();
+        double.parse(temp["elec"].toStringAsFixed(2)) - temp["elec"].ceil() == 0?month["elec"] = temp["elec"].ceil().toString():month["elec"] = double.parse(temp["elec"].toStringAsFixed(2)).toString();
+        temp = accum;
+        double.parse(temp["money"].toStringAsFixed(2)) - temp["money"].ceil() == 0?accum["money"] = f.format(temp["money"].ceil()):accum["money"] = f.format(double.parse(temp["money"].toStringAsFixed(2)));
+        double.parse(temp["co2"].toStringAsFixed(2)) - temp["co2"].ceil() == 0?accum["co2"] = temp["co2"].ceil().toString():accum["co2"] = double.parse(temp["co2"].toStringAsFixed(2)).toString();
+        double.parse(temp["elec"].toStringAsFixed(2)) - temp["elec"].ceil() == 0?accum["elec"] = temp["elec"].ceil().toString():accum["elec"] = double.parse(temp["elec"].toStringAsFixed(2)).toString();
+      });
+      // return parsed;
+    }
+    else{
+      Fluttertoast.showToast(
+          msg: "데이터 불러오기 오류",
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 16.0,
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    post_info();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +95,9 @@ class _ResultPageState extends State<ResultPage> {
           child: Text("항목별 보기",style: TextStyle(fontSize: 19,fontWeight: FontWeight.w500),),
         ),
       ),
-      body: SingleChildScrollView(
+      body: today == null||month==null||accum == null?Center(
+        child: CircularProgressIndicator(),
+      ):SingleChildScrollView(
         child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -114,44 +168,42 @@ class _ResultPageState extends State<ResultPage> {
                         ),
                         const SizedBox(height: 20,),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Padding(
-                                padding: EdgeInsets.only(left:25,right:50,top: 0),
-                                child : Image.asset('assets/img/record/piggy_bank.png',width: 100,)
-                            ),
-                        Column(
-                          children: [
+                            Image.asset('assets/img/record/piggy_bank.png',width: 100,),
                             Row(
+                              children: [
+                                Container(
+                                  margin : EdgeInsets.only(right: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                      SizedBox(height: 15,),
+                                      Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                      SizedBox(height: 15,),
+                                      Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                    ],
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                    SizedBox(width: 50,),
-                                    Text("5,268.2원",style: TextStyle(fontFamily: "gaegu",
+                                    Text("${today["money"]} 원",style: TextStyle(fontFamily: "gaegu",
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700),),
-                                  ],
-                                ),
-                                SizedBox(height: 15,),
-                                Row(
-                                  children: [
-                                    Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                    SizedBox(width: 50,),
-                                    Text("10,536원",style: TextStyle(fontFamily: "gaegu",
+                                    SizedBox(height: 15,),
+                                    Text("${month["money"]} 원",style: TextStyle(fontFamily: "gaegu",
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700),),
-                                  ],
-                                ),
-                                SizedBox(height: 15,),
-                                Row(
-                                  children: [
-                                    Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                    SizedBox(width: 50,),
-                                    Text("168,582원",style: TextStyle(fontFamily: "gaegu",
+                                    SizedBox(height: 15,),
+                                    Text("${accum["money"]} 원",style: TextStyle(fontFamily: "gaegu",
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700),),
                                   ],
                                 )
                               ],
-                            )
+                            ),
                           ],
                         )
                       ],
@@ -193,7 +245,7 @@ class _ResultPageState extends State<ResultPage> {
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 30),
                           child: Text(
-                              "1인당 한 달에 배출하는 온실가스는 무려 1.06톤이라는 사실! 알고 계셨나요?",
+                              messages??"loading",
                               style: TextStyle(fontSize: 20,height: 1.5)),
                         )
                       ],
@@ -203,94 +255,106 @@ class _ResultPageState extends State<ResultPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left:25,bottom:5,top:15),
+                        padding: EdgeInsets.only(left:25,bottom:5,top:10),
                         child: Text("내 절감량",
                           style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Image.asset('assets/img/record/electricity.png',width: 40,),
-                          Image.asset('assets/img/record/green_gas.png',width: 45,),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Column(
+                      Container(
+                        margin: EdgeInsets.only(top:5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
                               children: [
-                                Row(
-                                  children: [
-                                    Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                    SizedBox(width: 25,),
-                                    Text("2.21kWh",style: TextStyle(fontFamily: "gaegu",
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),),
-                                  ],
+                                Container(
+                                  margin:EdgeInsets.only(bottom: 10),
+                                  child: Image.asset('assets/img/record/electricity.png',width: 40,),
                                 ),
-                                SizedBox(height: 10,),
-                                Row(
-                                  children: [
-                                    Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                    SizedBox(width: 25,),
-                                    Text("4.42kWh",style: TextStyle(fontFamily: "gaegu",
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),),
-                                  ],
-                                ),
-                                SizedBox(height: 10,),
-                                Row(
-                                  children: [
-                                    Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                    SizedBox(width: 25,),
-                                    Text("70.72kWh",style: TextStyle(fontFamily: "gaegu",
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                    SizedBox(width: 25,),
-                                    Text("185.5gCO₂e",style: TextStyle(fontFamily: "gaegu",
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),),
-                                  ],
-                                ),
-                                SizedBox(height: 10,),
-                                Row(
-                                  children: [
-                                    Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                    SizedBox(width: 25,),
-                                    Text("371gCO₂e",style: TextStyle(fontFamily: "gaegu",
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),),
-                                  ],
-                                ),
-                                SizedBox(height: 10,),
-                                Row(
-                                  children: [
-                                    Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
-                                    SizedBox(width: 25,),
-                                    Text("5,936gCO₂e",style: TextStyle(fontFamily: "gaegu",
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),),
-                                  ],
+                                Container(
+                                    child:
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin : EdgeInsets.only(right: 10),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                              SizedBox(height: 15,),
+                                              Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                              SizedBox(height: 15,),
+                                              Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                            ],
+                                          ),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("${today["elec"]} kWh"??"loading",style: TextStyle(fontFamily: "gaegu",
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700),),
+                                            SizedBox(height: 15,),
+                                            Text("${month["elec"]} kWh"??"loading",style: TextStyle(fontFamily: "gaegu",
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700),),
+                                            SizedBox(height: 15,),
+                                            Text("${accum["elec"]} kWh"??"loading",style: TextStyle(fontFamily: "gaegu",
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700),),
+                                          ],
+                                        )
+                                      ],
+                                    )
                                 ),
                               ],
                             ),
-                          )
-                        ],
+                            Column(
+                              children: [
+                                Container(
+                                  margin:EdgeInsets.only(bottom: 10),
+                                  child:Image.asset('assets/img/record/green_gas.png',width: 50,height: 78,),
+                                ),
+                                Container(
+                                    child:
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin : EdgeInsets.only(right: 10),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("오늘", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                              SizedBox(height: 15,),
+                                              Text("이번 달", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                              SizedBox(height: 15,),
+                                              Text("누적", style: TextStyle(fontFamily: "gaegu", fontSize: 16),),
+                                            ],
+                                          ),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("${today["co2"]} gCO₂e"??"loading",style: TextStyle(fontFamily: "gaegu",
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700),),
+                                            SizedBox(height: 15,),
+                                            Text("${month["co2"]} gCO₂e"??"loading",style: TextStyle(fontFamily: "gaegu",
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700),),
+                                            SizedBox(height: 15,),
+                                            Text("${accum["co2"]} gCO₂e"??"loading",style: TextStyle(fontFamily: "gaegu",
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700),),
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       )
                     ],
                   ),
