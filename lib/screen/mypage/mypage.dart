@@ -122,7 +122,7 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomBar(selectedIdx: 3,),
-      body: info_loading&&level_loading?Center(
+      body: info_loading||level_loading?Center(
         child: CircularProgressIndicator(),
       ):Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

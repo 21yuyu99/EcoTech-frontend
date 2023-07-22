@@ -62,8 +62,6 @@ class _CheckPageState extends State<CheckPage> {
             ),
             actions: [
               Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
                 color:Colors.white,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
