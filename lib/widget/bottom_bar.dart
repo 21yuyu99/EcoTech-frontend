@@ -70,7 +70,7 @@ class _BottomBarState extends State<BottomBar> {
                 context,
                 MaterialPageRoute(builder: (context) => const RecordMain()),
               );
-            case 3:
+            case 2:
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const MyPage()),

@@ -121,7 +121,7 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomBar(selectedIdx: 3,),
+      bottomNavigationBar: BottomBar(selectedIdx: 2,),
       body: info_loading&&level_loading?Center(
         child: CircularProgressIndicator(),
       ):Column(
