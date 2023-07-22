@@ -66,15 +66,18 @@ class _CheckPageState extends State<CheckPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xffFFF6C7),
-                        padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                    Container(
+                      margin: EdgeInsets.only(left: 25),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xffFFF6C7),
+                          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                        ),
+                        onPressed: (){
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("돌아가기",style: TextStyle(color: Colors.black,fontSize: 23),),
                       ),
-                      onPressed: (){
-                        Navigator.of(context).pop();
-                      },
-                      child: Text("돌아가기",style: TextStyle(color: Colors.black,fontSize: 23),),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -106,7 +109,7 @@ class _CheckPageState extends State<CheckPage> {
                         style: TextStyle(color: Colors.black,fontSize: 23,
                         ),),
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(height: 80,),
                   ],
                 ),
               )

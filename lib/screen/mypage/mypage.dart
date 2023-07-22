@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mypage/setting.dart';
+import 'package:frontend/utils/colors.dart';
 import 'package:frontend/utils/which_login.dart';
 import 'package:frontend/widget/bottom_bar.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
@@ -122,7 +123,7 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomBar(selectedIdx: 2,),
-      body: info_loading&&level_loading?Center(
+      body: info_loading||level_loading?Center(
         child: CircularProgressIndicator(),
       ):Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -131,23 +132,27 @@ class _MyPageState extends State<MyPage> {
             children: [
               const SizedBox(width: 25,),
               Text("${nickname}님"?? "loading", style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.w500)),
-              const SizedBox(width: 15,),
               Column(
                 children: [
-                  ElevatedButton(
+                  OutlinedButton(
                     onPressed: () {
                       logout();
                     },
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: Size.zero,
+                      padding: EdgeInsets.only(
+                        top: 5,
+                        left :10,
+                        right : 10, bottom : 5
+                      ),
+                      side: BorderSide(width: 1.0, color: AppColor.accentColor),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                    ),
                     child: const Text(
                       "로그아웃",
-                      style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w400),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffFFF1A7),
-                      padding: EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                      style: TextStyle(fontSize: 15, color: AppColor.accentColor, fontWeight: FontWeight.w500),
                     ),
                   ),
                   const SizedBox(height: 50,),
@@ -157,31 +162,40 @@ class _MyPageState extends State<MyPage> {
           ),
           Column(
             children: [
-              Text("LV.1", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),),
+              Text("LV.${level}", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),),
               const SizedBox(height: 15,),
-              Image.asset('assets/img/level/circle_level_${level}.png', height: 200, width: 200,),
+              Image.asset('assets/img/level/circle_level_${level}.png', height: 170, width: 170,),
             ],
           ),
-          Material(
-            elevation: 4,
-            borderRadius: BorderRadius.circular(20),
-            child: ElevatedButton(
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Settings(first: false,)),
-                );
-              },
-              child: const Text("환경 습관 기본 설정", style: TextStyle(fontSize: 28, color: Colors.black, fontWeight: FontWeight.w500),),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xffF3F3F3).withOpacity(1), // 버튼 색상을 회색으로 설정
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20), // 버튼 패딩을 설정하여 크기를 조절
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20), // 버튼의 모서리를 둥글게 설정
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color:Color(0xffFFF4B8),
+                  blurRadius:10,
+                  offset: Offset(0,5),
                 ),
-              ),
+              ],
             ),
-          ),
+            child: ElevatedButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Settings(first: false,)),
+                  );
+                },
+                child: const Text("환경 습관 기본 설정", style: TextStyle(fontSize: 28, color: Colors.black, fontWeight: FontWeight.w500),),
+                style:ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    elevation: 0,
+                    side: BorderSide(color: AppColor.accentColor,width: 2),
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)
+                    )
+                )
+            ),
+          )
         ],
       ),
     );

@@ -214,7 +214,7 @@ void initState() {
                             height: 70,
                             width : MediaQuery.of(context).size.width,
                             alignment: Alignment.bottomCenter,
-                            child: Text("LV.1", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w900,fontFamily: 'gaegu')),
+                            child: Text("LV.${level}", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w900,fontFamily: 'gaegu')),
                           ),
                           Positioned(
                             left: MediaQuery.of(context).size.width*0.5+15,
