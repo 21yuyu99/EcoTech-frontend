@@ -7,11 +7,14 @@ import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mainPage.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'firebase_options.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   KakaoSdk.init(nativeAppKey: dotenv.env['kakaoKey']);
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
