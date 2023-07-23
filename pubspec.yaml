@@ -45,6 +45,9 @@ dependencies:
   fluttertoast: ^8.2.2
   flutter_local_notifications: ^15.1.0+1
   intl: ^0.18.1
+  webview_flutter: ^4.2.2
+  webview_flutter_android:
+  webview_flutter_wkwebview:
 
 dev_dependencies:
   flutter_test:
