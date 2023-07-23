@@ -15,8 +15,8 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  List iconList = [Icon(Icons.home),Icon(Icons.edit_note),Icon(Icons.person)];
-  List<String> menuNameList = ["홈","기록","마이페이지"];
+  List iconList = [Icon(Icons.home),Icon(Icons.edit_note),Icon(Icons.eco),Icon(Icons.person)];
+  List<String> menuNameList = ["홈","기록","스토어","마이페이지"];
   @override
   Widget build(BuildContext context) {
     int _selectedIndex = widget.selectedIdx;
@@ -70,7 +70,7 @@ class _BottomBarState extends State<BottomBar> {
                 context,
                 MaterialPageRoute(builder: (context) => const RecordMain()),
               );
-            case 2:
+            case 3:
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const MyPage()),
