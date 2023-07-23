@@ -48,6 +48,7 @@ dependencies:
   webview_flutter: ^4.2.2
   webview_flutter_android:
   webview_flutter_wkwebview:
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:
