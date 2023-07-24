@@ -112,7 +112,7 @@ class _StoreMainState extends State<StoreMain> {
 
       )
 
-      ..loadRequest(Uri.parse('https://youtube.com/'));
+      ..loadRequest(Uri.parse('https://eco-tech-webview.vercel.app'));
 
 
     if (controller.platform is AndroidWebViewController) {
