@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:frontend/widget/bottom_bar.dart';
 
 
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -129,6 +130,7 @@ class _StoreMainState extends State<StoreMain> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      bottomNavigationBar: BottomBar(selectedIdx: 2,),
       body: SafeArea(
         child:WillPopScope(
           onWillPop: () => _goBack(context),
