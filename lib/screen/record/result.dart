@@ -210,7 +210,6 @@ class _ResultPageState extends State<ResultPage> {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height*0.2,
                     margin: EdgeInsets.only(top: 20,bottom: 20),
                     padding: EdgeInsets.only(bottom:15,top:10),
                     decoration: BoxDecoration(
