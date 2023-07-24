@@ -31,6 +31,12 @@ class MyApp extends StatelessWidget {
           fontFamily: 'MainFont',
           scaffoldBackgroundColor: Colors.white,
       ),
+      builder: (context, child) {
+        return MediaQuery(
+          child: child as Widget,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        );
+      },
       home: Login(),
     );
   }
