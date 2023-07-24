@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
       title: '에코테크',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          fontFamily: 'MainFont'
+          fontFamily: 'MainFont',
+          scaffoldBackgroundColor: Colors.white,
       ),
       home: Login(),
     );
