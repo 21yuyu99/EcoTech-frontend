@@ -263,7 +263,7 @@ class _SettingsState extends State<Settings> {
                       ],
                     ),
                   ),
-                  Container(
+                  _WeatherHabitValue == "에어컨을 틈"?Container(
                     height: MediaQuery.of(context).size.height*0.23,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,8 +320,8 @@ class _SettingsState extends State<Settings> {
                         ),
                       ],
                     ),
-                  ),
-                  Container(
+                  ):Text(""),
+                  _WeatherHabitValue == "난방을 틈"?Container(
                     height: MediaQuery.of(context).size.height*0.23,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,7 +329,7 @@ class _SettingsState extends State<Settings> {
                       children: [
                         Container(
                           padding: EdgeInsets.only(left: 30),
-                          child: Text("에어컨 평소 설정 온도", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
+                          child: Text("난방 평소 설정 온도", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
                         ),
                         SizedBox(height:30,),
                         Row(
@@ -378,7 +378,7 @@ class _SettingsState extends State<Settings> {
                         ),
                       ],
                     ),
-                  ),
+                  ):Text(""),
                   Container(
                     height: MediaQuery.of(context).size.height*0.2,
                     child: Column(
