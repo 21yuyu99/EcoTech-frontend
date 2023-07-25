@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
   var messageString = "";
   void getMyDeviceToken() async {
     final token = await FirebaseMessaging.instance.getToken();
-    // print("내 디바이스 토큰: $token");
+    print("내 디바이스 토큰: $token");
   }
 bool level_msg = false;
 String? money;
