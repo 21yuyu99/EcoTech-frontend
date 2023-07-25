@@ -7,6 +7,8 @@ import '../../widget/bottom_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
+import '../mainPage.dart';
+
 class Settings extends StatefulWidget {
   Settings({super.key,
     required this.first,
@@ -41,10 +43,10 @@ class _SettingsState extends State<Settings> {
     });
     return response.statusCode;
   }
-
+  bool msgOpen = true;
+  bool first = false;
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       bottomNavigationBar: const BottomBar(selectedIdx: 3,),
       floatingActionButton: Container(
@@ -74,7 +76,12 @@ class _SettingsState extends State<Settings> {
                 fontSize: 16.0,
                 textColor: Colors.black,
                 backgroundColor: Colors.white,
-              );Navigator.push(
+              );
+              first?
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Home())):
+              Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const MyPage()));
             }
@@ -318,49 +325,51 @@ class _SettingsState extends State<Settings> {
                 ],
               ),
             ),
-            Visibility(
-              visible: widget.first,
+            widget.first?Visibility(
+                visible: msgOpen,
                 child: Positioned(
-                bottom: MediaQuery.of(context).size.height*0.35,
-                child: Container(
-                    width: MediaQuery.of(context).size.width*0.94,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: Colors.white,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: Color.fromRGBO(44, 189, 15, 0.26),
-                          blurRadius:5.0,
-                          offset: Offset(0,5),
-                        ),
-                      ],
-                    ),
-                    margin:EdgeInsets.only(left:MediaQuery.of(context).size.width*0.03,right:MediaQuery.of(context).size.width*0.03),
+                    bottom: MediaQuery.of(context).size.height*0.35,
                     child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(height: 20,),
-                          Text("환영합니다!",style: TextStyle(fontSize: 25,),),
-                          SizedBox(height: 20,),
-                          Text("원활한 서비스 이용을 위해",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
-                          SizedBox(height: 10,),
-                          Text("기본 설정을 먼저 해주세요:)",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
-                          SizedBox(height: 20,),
-                          Text("예상 절약 금액, 에니저 절감량을 계산하는 데 사용됩니다.",style: TextStyle(fontSize: 16,height: 1.5),),
-                          SizedBox(height: 20,),
-                          ElevatedButton(onPressed: (){
-                            setState(() {
-                              widget.first = false;
-                            });
-                          }, child: Text("확인했어요",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-                            style: ElevatedButton.styleFrom(padding:EdgeInsets.symmetric(vertical: 15,horizontal: 15),
-                                backgroundColor: AppColor.primaryColor),),
-                        ],
-                      ),
-                    )
-                )))
+                        width: MediaQuery.of(context).size.width*0.94,
+                        height: 250,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.white,
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: Color.fromRGBO(44, 189, 15, 0.26),
+                              blurRadius:5.0,
+                              offset: Offset(0,5),
+                            ),
+                          ],
+                        ),
+                        margin:EdgeInsets.only(left:MediaQuery.of(context).size.width*0.03,right:MediaQuery.of(context).size.width*0.03),
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 20,),
+                              Text("환영합니다!",style: TextStyle(fontSize: 25,),),
+                              SizedBox(height: 20,),
+                              Text("원활한 서비스 이용을 위해",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                              SizedBox(height: 10,),
+                              Text("기본 설정을 먼저 해주세요:)",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                              SizedBox(height: 20,),
+                              Text("예상 절약 금액, 에니저 절감량을 계산하는 데 사용됩니다.",style: TextStyle(fontSize: 16,height: 1.5),),
+                              SizedBox(height: 20,),
+                              ElevatedButton(onPressed: (){
+                                setState(() {
+                                  msgOpen = false;
+                                  widget.first = false;
+                                  first = true;
+                                });
+                              }, child: Text("확인했어요",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+                                style: ElevatedButton.styleFrom(padding:EdgeInsets.symmetric(vertical: 15,horizontal: 15),
+                                    backgroundColor: AppColor.primaryColor),),
+                            ],
+                          ),
+                        )
+                    ))):Text(""),
           ],
         )
       ),
