@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -5,8 +7,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mainPage.dart';
+import 'package:frontend/screen/record/check_page.dart';
+import 'package:frontend/utils/settings_check.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'firebase_options.dart';
@@ -81,6 +86,68 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  var messageString = "";
+  void getMyDeviceToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    print("내 디바이스 토큰: $token");
+  }
+  @override
+  void initState(){
+    getMyDeviceToken();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      RemoteNotification? notification = message.notification;
+
+      if (notification != null) {
+        FlutterLocalNotificationsPlugin().show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'high_importance_channel',
+              'high_importance_notification',
+              importance: Importance.max,
+            ),
+          ),
+        );
+        setState(() {
+          messageString = message.notification!.body!;
+          print("Foreground 메시지 수신: $messageString");
+        });
+      }
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+      if (message.data['click_action'] == 'FLUTTER_NOTIFICATION_CLICK') {
+        final user_info = await settingCheck();
+        final Map parsed = json.decode(user_info);
+        // Here, we navigate to another screen. You can push to named routes, but here is an example of how to push a new screen onto the stack.
+        if(parsed['status'] == 200) {
+          print(parsed);
+          if (parsed['save_check'] == 1) {
+            Fluttertoast.showToast(
+              msg: "오늘 하루 체크를 이미 했어요!",
+              gravity: ToastGravity.BOTTOM,
+              fontSize: 16.0,
+              textColor: Colors.black,
+              backgroundColor: Colors.white,
+            );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          }
+          else{
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CheckPage(carhabit: parsed["car_habit"])),
+            );
+          }
+        }
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
