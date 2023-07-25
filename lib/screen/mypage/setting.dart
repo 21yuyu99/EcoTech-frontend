@@ -19,7 +19,8 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  int degree = 26;
+  int summerDegree = 26;
+  int winterDegree = 20;
   final _ProvinceList = ['시/도','서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '경기도', "강원도",
   "충청북도","충청남도","전라북도","전라남도","경상북도","경상남도","제주특별자치도","세종특별자치시"];
   var _SelectedProvinceValue= '시/도';
@@ -28,7 +29,8 @@ class _SettingsState extends State<Settings> {
   var _SelectedCityValue = '시/군/구';
   final _CommutingHabitList = ['자차 이용', '대중교통 이용', '도보/자전거 이용','재택근무'];
   var _SelectedCommutingHabitValue = '자차 이용';
-
+  final _WeatherHabitList = ['에어컨을 틈','난방을 틈','해당 없음'];
+  var _WeatherHabitValue = '해당 없음';
 
   Future<int> save_post() async {
     final user_info = await get_user(true,true);
@@ -37,7 +39,7 @@ class _SettingsState extends State<Settings> {
       "user_id" : user_info[0],
       "metro" : _SelectedProvinceValue,
       "city" : _SelectedCityValue,
-      "air_habit" : degree.toString(),
+      "air_habit" : summerDegree.toString(),
       "car_habit" : _SelectedCommutingHabitValue == "자차 이용"?"1":"0",
       "nickname" : user_info[1],
     });
@@ -113,7 +115,6 @@ class _SettingsState extends State<Settings> {
         child: Stack(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,7 +218,53 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height*0.3,
+                    height: MediaQuery.of(context).size.height*0.23,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 30,top:15),
+                          child: Text("요즘 날씨에는", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
+                        ),
+                        SizedBox(height:40,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 150,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xffCDD6CC).withOpacity(.30),
+                              ),
+                              child: DropdownButton(
+                                iconSize: 0,
+                                value: _WeatherHabitValue,
+                                alignment: Alignment.center,
+                                underline: SizedBox.shrink(),
+                                items: _WeatherHabitList.map(
+                                      (value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value, style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,),),
+                                    );
+                                  },
+                                ).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _WeatherHabitValue = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.23,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -239,7 +286,7 @@ class _SettingsState extends State<Settings> {
                                 ),
                                 color: Color(0xffCDD6CC).withOpacity(.30),
                               ),
-                              child: Text(degree.toString(),style:TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                              child: Text(summerDegree.toString(),style:TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                             ),
                             SizedBox(width: 10,),
                             Text(
@@ -251,7 +298,7 @@ class _SettingsState extends State<Settings> {
                                 IconButton(
                                   onPressed: (){
                                     setState(() {
-                                      degree++;
+                                      summerDegree++;
                                     });
                                   },
                                   padding: EdgeInsets.all(0),
@@ -261,7 +308,7 @@ class _SettingsState extends State<Settings> {
                                 IconButton(
                                   onPressed: (){
                                     setState(() {
-                                      degree--;
+                                      summerDegree--;
                                     });
                                   },
                                   iconSize: 30,
@@ -275,7 +322,65 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height*0.3,
+                    height: MediaQuery.of(context).size.height*0.23,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Text("에어컨 평소 설정 온도", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
+                        ),
+                        SizedBox(height:30,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 25,vertical: 13),
+                              decoration: BoxDecoration(
+                                //border: Border.all(color:Colors.black,width: 2.0),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
+                                ),
+                                color: Color(0xffCDD6CC).withOpacity(.30),
+                              ),
+                              child: Text(winterDegree.toString(),style:TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                            ),
+                            SizedBox(width: 10,),
+                            Text(
+                              "℃",style: TextStyle(fontSize: 18,fontFamily: 'gaegu'),
+                            ),
+                            SizedBox(width: 10,),
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      winterDegree++;
+                                    });
+                                  },
+                                  padding: EdgeInsets.all(0),
+                                  iconSize: 35,
+                                  icon: Image.asset('assets/img/record/up_arrow.png'),
+                                ),
+                                IconButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      winterDegree--;
+                                    });
+                                  },
+                                  iconSize: 30,
+                                  icon: Image.asset('assets/img/record/down_arrow.png'),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.2,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
