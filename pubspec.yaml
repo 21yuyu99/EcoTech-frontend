@@ -40,6 +40,7 @@ dependencies:
   flutter_config: ^2.0.2
   flutter_dotenv: ^5.1.0
   firebase_core: ^2.15.0
+  firebase_messaging: ^14.5.0
   firebase_auth: ^4.7.0
   google_sign_in: ^6.1.4
   fluttertoast: ^8.2.2

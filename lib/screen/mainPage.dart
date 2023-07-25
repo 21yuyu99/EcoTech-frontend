@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,6 +18,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var messageString = "";
+  void getMyDeviceToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    print("내 디바이스 토큰: $token");
+  }
 bool level_msg = false;
 String? money;
 String? electronic;
@@ -78,6 +85,29 @@ void post_level() async{
 }
 @override
 void initState() {
+  getMyDeviceToken();
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    RemoteNotification? notification = message.notification;
+
+    if (notification != null) {
+      FlutterLocalNotificationsPlugin().show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'high_importance_channel',
+            'high_importance_notification',
+            importance: Importance.max,
+          ),
+        ),
+      );
+      setState(() {
+        messageString = message.notification!.body!;
+        print("Foreground 메시지 수신: $messageString");
+      });
+    }
+  });
   super.initState();
   post_info();
   post_level();
