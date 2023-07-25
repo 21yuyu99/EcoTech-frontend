@@ -10,6 +10,7 @@ import 'package:frontend/screen/mainPage.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'firebase_options.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("백그라운드 메시지 처리.. ${message.notification!.body!}");
