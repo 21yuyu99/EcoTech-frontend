@@ -9,6 +9,7 @@ import 'package:frontend/widget/bottom_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../utils/settings_check.dart';
 import '../utils/user_info.dart';
 
 class Home extends StatefulWidget {
@@ -22,7 +23,7 @@ class _HomeState extends State<Home> {
   var messageString = "";
   void getMyDeviceToken() async {
     final token = await FirebaseMessaging.instance.getToken();
-    print("내 디바이스 토큰: $token");
+    // print("내 디바이스 토큰: $token");
   }
 bool level_msg = false;
 String? money;
@@ -109,13 +110,33 @@ void initState() {
       });
     }
   });
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
     if (message.data['click_action'] == 'FLUTTER_NOTIFICATION_CLICK') {
+      final user_info = await settingCheck();
+      final Map parsed = json.decode(user_info);
       // Here, we navigate to another screen. You can push to named routes, but here is an example of how to push a new screen onto the stack.
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CheckPage(carhabit: 1)),
-      );
+      if(parsed['status'] == 200) {
+        print(parsed);
+        if (parsed['save_check'] == 1) {
+          Fluttertoast.showToast(
+            msg: "오늘 하루 체크를 이미 했어요!",
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 16.0,
+            textColor: Colors.black,
+            backgroundColor: Colors.white,
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Home()),
+          );
+        }
+        else{
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CheckPage(carhabit: parsed["car_habit"])),
+          );
+        }
+      }
     }
   });
   super.initState();
