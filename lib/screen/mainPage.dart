@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:frontend/screen/record/check_page.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -106,6 +107,15 @@ void initState() {
         messageString = message.notification!.body!;
         print("Foreground 메시지 수신: $messageString");
       });
+    }
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    if (message.data['click_action'] == 'FLUTTER_NOTIFICATION_CLICK') {
+      // Here, we navigate to another screen. You can push to named routes, but here is an example of how to push a new screen onto the stack.
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CheckPage(carhabit: 1)),
+      );
     }
   });
   super.initState();
