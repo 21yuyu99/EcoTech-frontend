@@ -433,7 +433,7 @@ class _SettingsState extends State<Settings> {
             widget.first?Visibility(
                 visible: msgOpen,
                 child: Positioned(
-                    bottom: MediaQuery.of(context).size.height*0.35,
+                    top: MediaQuery.of(context).size.height*0.33,
                     child: Container(
                         width: MediaQuery.of(context).size.width*0.94,
                         height: 250,
