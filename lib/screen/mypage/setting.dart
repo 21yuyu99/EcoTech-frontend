@@ -50,7 +50,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const BottomBar(selectedIdx: 3,),
+      bottomNavigationBar: first ? null : const BottomBar(selectedIdx: 3,),
       floatingActionButton: Container(
         decoration: BoxDecoration(
         boxShadow: <BoxShadow>[
