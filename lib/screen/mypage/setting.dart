@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
         ),
         width:70,
         height: 45,
-        margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height*0.76),
+        margin: first ? EdgeInsets.only(bottom:MediaQuery.of(context).size.height*0.85):EdgeInsets.only(bottom:MediaQuery.of(context).size.height*0.76),
         child: FloatingActionButton(
         elevation: 0,
         shape: RoundedRectangleBorder(

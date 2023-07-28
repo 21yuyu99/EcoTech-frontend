@@ -1,18 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:frontend/widget/bottom_bar.dart';
-
-
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:frontend/widget/bottom_bar.dart';
-// import 'package:intl/intl.dart';
-// import '../../utils/user_info.dart';
-// import 'package:http/http.dart' as http;
-
 
 class StoreMain extends StatefulWidget {
   const StoreMain({super.key});
