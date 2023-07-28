@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/screen/login.dart';
 import 'package:frontend/screen/mainPage.dart';
 import 'package:frontend/screen/record/check_page.dart';
+import 'package:frontend/utils/new_member_check.dart';
 import 'package:frontend/utils/settings_check.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
@@ -158,7 +159,8 @@ class _LoginState extends State<Login> {
             if (snapshot.data == true) {
               final google_user = FirebaseAuth.instance.currentUser;
               if(google_user != null){
-                return Home();
+                newMemberCheck(context);
+                return Text("");
               }
               try {
                 FutureBuilder(
@@ -168,10 +170,12 @@ class _LoginState extends State<Login> {
                     print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
                     User user =  UserApi.instance.me() as User;
                     print('카카오톡 닉네임 : ${user.kakaoAccount?.profile?.nickname}');
-                    return Home();
+                    newMemberCheck(context);
+                    return Text("");
                   },
                 );
-                return Home();
+                newMemberCheck(context);
+                return Text("");
               }
               catch (error) {
                 print(error);
@@ -182,7 +186,8 @@ class _LoginState extends State<Login> {
               final google_user = FirebaseAuth.instance.currentUser;
               if(google_user != null){
                 print("구글 로그인 확인");
-                return Home();
+                newMemberCheck(context);
+                return Text("");
               } else {
                 print('발급된 토큰 없음');
                 return LoginPage();

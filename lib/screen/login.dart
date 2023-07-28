@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:frontend/utils/new_member_check.dart';
 import 'package:frontend/utils/user_info.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'mainPage.dart';
@@ -21,26 +21,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
-  void postInfo() async {
-    final user =  await get_user(true, false);
-    var url = Uri.parse('http://ec2-13-209-22-145.ap-northeast-2.compute.amazonaws.com:3036/user/usercheck');
-    var response = await http.post(url,body:{
-      "user_id" : user[0],
-    });
-    var data = json.decode(response.body);
-    if(data["user_id"]!=user[0]){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Settings(first: true,)),
-      );
-    }
-    else{
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Home()),
-      );
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                                   try {
                                   await UserApi.instance.loginWithKakaoTalk();
                                   print('카카오톡으로 로그인 성공');
-                                  postInfo();
+                                  newMemberCheck(context);
                                   } catch (error) {
                                   print('카카오톡으로 로그인 실패 $error');
 
@@ -101,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                                   try {
                                   await UserApi.instance.loginWithKakaoAccount();
                                   print('카카오계정으로 로그인 성공');
-                                  postInfo();
+                                  newMemberCheck(context);
                                   } catch (error) {
                                   print('카카오계정으로 로그인 실패 $error');
                                   Navigator.push(
@@ -115,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                                   try {
                                   await UserApi.instance.loginWithKakaoAccount();
                                   print('카카오계정으로 로그인 성공');
-                                  postInfo();
+                                  newMemberCheck(context);
                                   }
                                   catch (error) {
                                   print('카카오계정으로 로그인 실패 $error');
@@ -146,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                                     );
                                     try {
                                       await FirebaseAuth.instance.signInWithCredential(credential);
-                                      postInfo();
+                                      newMemberCheck(context);
                                     } on FirebaseAuthException catch (e) {
                                       print('error $e');
                                     } catch (e) {
